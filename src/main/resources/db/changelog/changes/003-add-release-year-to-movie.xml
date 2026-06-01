@@ -7,8 +7,12 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <include file="db/changelog/changes/001-initial-schema.xml"/>
-    <include file="db/changelog/changes/002-create-movie-table.xml"/>
-    <include file="db/changelog/changes/003-add-release-year-to-movie.xml"/>
+    <changeSet id="003-add-release-year-to-movie" author="albert">
+
+        <addColumn tableName="movie">
+            <column name="release_year" type="INT"/>
+        </addColumn>
+
+    </changeSet>
 
 </databaseChangeLog>
