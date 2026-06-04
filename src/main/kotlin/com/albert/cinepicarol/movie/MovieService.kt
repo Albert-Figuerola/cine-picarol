@@ -1,26 +1,47 @@
 package com.albert.cinepicarol.movie
 
+import com.albert.cinepicarol.movie.exception.MovieNotFoundException
+import com.albert.cinepicarol.movie.request.CreateMovieRequest
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
+import java.util.UUID
 
 @Service
 class MovieService (
     private val movieRepository: MovieRepository
 ) {
 
-    fun createMovie(movie: MovieEntity): MovieEntity  {
-        require(movie.title.isNotBlank()) {
+    fun createMovie(request: CreateMovieRequest): MovieEntity  {
+        require(request.title.isNotBlank()) {
             "Movie title cannot be empty"
         }
 
-        require(movie.description.isNotBlank()) {
+        require(request.description.isNotBlank()) {
             "Movie description cannot be empty"
         }
 
-        require(movie.durationMinutes > 0) {
+        require(request.durationMinutes > 0) {
             "Movie duration minutes must be greater than zero"
         }
 
-        return movieRepository.save(movie)
+        val movieEntity = MovieEntity(
+            id = UUID.randomUUID(),
+            title = request.title,
+            description = request.description,
+            releaseYear = request.releaseYear,
+            durationMinutes = request.durationMinutes,
+            createdAt = LocalDateTime.now(),
+            updatedAt = LocalDateTime.now()
+        )
+
+        return movieRepository.save(movieEntity)
     }
+
+    fun getMovieById(id: UUID): MovieEntity =
+        movieRepository.findByIdOrNull(id) ?: throw MovieNotFoundException(id)
+
+    fun getMovies(): List<MovieEntity> =
+        movieRepository.findAll()
 
 }
