@@ -2,6 +2,8 @@ package com.albert.cinepicarol.movie
 
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.movie.request.CreateMovieRequest
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -41,7 +43,9 @@ class MovieService (
     fun getMovieById(id: UUID): MovieEntity =
         movieRepository.findByIdOrNull(id) ?: throw MovieNotFoundException(id)
 
-    fun getMovies(): List<MovieEntity> =
-        movieRepository.findAll()
+    fun getMovies(
+        pageable: Pageable
+    ): Page<MovieEntity> =
+        movieRepository.findAll(pageable)
 
 }

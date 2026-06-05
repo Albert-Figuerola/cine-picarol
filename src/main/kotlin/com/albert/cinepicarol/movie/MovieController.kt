@@ -3,6 +3,10 @@ package com.albert.cinepicarol.movie
 import com.albert.cinepicarol.movie.mapper.toResponse
 import com.albert.cinepicarol.movie.request.CreateMovieRequest
 import com.albert.cinepicarol.movie.response.MovieResponse
+import com.albert.cinepicarol.movie.response.MoviesPageResponse
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -32,9 +36,11 @@ class MovieController (
     }
 
     @GetMapping("/movies")
-    fun getMovies() : List<MovieResponse> {
-        val movie = movieService.getMovies()
-        return movie.toResponse()
+    fun getMovies(
+        @PageableDefault(size = 10, sort = ["title"], direction = Sort.Direction.DESC) pageable: Pageable
+    ) : MoviesPageResponse {
+        val movies = movieService.getMovies(pageable)
+        return movies.toResponse()
     }
 
 }
