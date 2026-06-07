@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
-import java.time.LocalDateTime
-import java.util.UUID
 import kotlin.test.assertEquals
 import org.mockito.kotlin.whenever
 import org.mockito.kotlin.verify
@@ -17,7 +15,7 @@ class MovieServiceTest {
     private val movieService = MovieService(movieRepository)
 
     @Test
-    fun shouldCreateMovie() {
+    fun `should create movie`() {
         val request = createMovieRequest()
 
         whenever(movieRepository.save(any<MovieEntity>()))
@@ -34,7 +32,7 @@ class MovieServiceTest {
     }
 
     @Test
-    fun shouldThrowExceptionWhenTitleIsEmpty() {
+    fun `should throw exception when title is empty`() {
         val movie = createMovieRequest(title = "")
 
         assertThrows<IllegalArgumentException> {
@@ -43,7 +41,7 @@ class MovieServiceTest {
     }
 
     @Test
-    fun shouldThrowExceptionWhenTitleContainsOnlySpaces() {
+    fun `should throw exception when title contains only spaces`() {
         val movie = createMovieRequest(title = "     ")
 
         assertThrows<IllegalArgumentException> {
@@ -52,7 +50,7 @@ class MovieServiceTest {
     }
 
     @Test
-    fun shouldThrowExceptionWhenDescriptionIsEmpty() {
+    fun `should throw exception when description is empty`() {
         val movie = createMovieRequest(description = "")
 
         assertThrows<IllegalArgumentException> {
@@ -61,7 +59,7 @@ class MovieServiceTest {
     }
 
     @Test
-    fun shouldThrowExceptionWhenDescriptionContainsOnlySpaces() {
+    fun `should throw exception when description contains only spaces`() {
         val movie = createMovieRequest(description = "     ")
 
         assertThrows<IllegalArgumentException> {
@@ -70,7 +68,7 @@ class MovieServiceTest {
     }
 
     @Test
-    fun shouldThrowExceptionWhenDurationIsZero() {
+    fun `should throw exception when duration is zero`() {
         val movie = createMovieRequest(durationMinutes = 0)
 
         assertThrows<IllegalArgumentException> {
@@ -89,23 +87,6 @@ class MovieServiceTest {
             description = description,
             releaseYear = releaseYear,
             durationMinutes = durationMinutes
-        )
-    }
-
-    private fun createMovie(
-        title: String = "Title test",
-        description: String = "Description test",
-        releaseYear: Int? = 2023,
-        durationMinutes: Int = 120
-    ): MovieEntity {
-        return MovieEntity(
-            id = UUID.randomUUID(),
-            title = title,
-            description = description,
-            releaseYear = releaseYear,
-            durationMinutes = durationMinutes,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
         )
     }
 
