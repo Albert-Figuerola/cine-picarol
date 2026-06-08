@@ -1,6 +1,6 @@
 package com.albert.cinepicarol.movie.mapper
 
-import com.albert.cinepicarol.movie.MovieEntity
+import com.albert.cinepicarol.movie.entity.MovieEntity
 import com.albert.cinepicarol.movie.response.MovieResponse
 import com.albert.cinepicarol.movie.response.MoviesPageResponse
 import org.springframework.data.domain.Page
@@ -21,6 +21,6 @@ internal fun Page<MovieEntity>.toResponse(): MoviesPageResponse =
         pageSize = size,
         totalPages = totalPages,
         totalElements = totalElements,
-        hasNext = hasNext(),
-        hasPrevious = hasPrevious()
+        hasPrevious = hasPrevious(),
+        hasNext = hasNext()
     )

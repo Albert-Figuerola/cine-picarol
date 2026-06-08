@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.movie
+package com.albert.cinepicarol.movie.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -18,16 +18,16 @@ class MovieEntity (
     val id: UUID,
 
     @Column(nullable = false)
-    val title: String,
+    var title: String,
 
     @Column(nullable = false)
-    val description: String,
+    var description: String,
 
     @Column(name = "release_year")
-    val releaseYear: Int?,
+    var releaseYear: Int?,
 
     @Column(nullable = false)
-    val durationMinutes: Int,
+    var durationMinutes: Int,
 
     @Column(nullable = false)
     val createdAt: LocalDateTime,

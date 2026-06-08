@@ -1,13 +1,22 @@
 package com.albert.cinepicarol.movie
 
+import com.albert.cinepicarol.movie.controller.MovieController
+import com.albert.cinepicarol.movie.entity.MovieEntity
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
+import com.albert.cinepicarol.movie.usecase.CreateMovieUseCase
+import com.albert.cinepicarol.movie.usecase.DeleteMovieUseCase
+import com.albert.cinepicarol.movie.usecase.GetMovieByIdUseCase
+import com.albert.cinepicarol.movie.usecase.GetMoviesUseCase
+import com.albert.cinepicarol.movie.usecase.UpdateMovieUseCase
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.doThrow
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -22,21 +31,25 @@ class MovieControllerTest {
     private lateinit var mockMvc: MockMvc
 
     @MockitoBean
-    private lateinit var movieService: MovieService
+    private lateinit var createMovieUseCase: CreateMovieUseCase
+
+    @MockitoBean
+    private lateinit var getMovieByIdUseCase: GetMovieByIdUseCase
+
+    @MockitoBean
+    private lateinit var getMoviesUseCase: GetMoviesUseCase
+
+    @MockitoBean
+    private lateinit var updateMovieUseCase: UpdateMovieUseCase
+
+    @MockitoBean
+    private lateinit var deleteMovieUseCase: DeleteMovieUseCase
 
     @Test
     fun `should return 200 when movie exists`() {
-        val movie = MovieEntity(
-            id = UUID.randomUUID(),
-            title = "Titanic",
-            description = "Description",
-            releaseYear = 1997,
-            durationMinutes = 194,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
-        )
+        val movie = createMovie()
 
-        whenever(movieService.getMovieById(movie.id))
+        whenever(getMovieByIdUseCase.execute(movie.id))
             .thenReturn(movie)
 
         mockMvc.perform(
@@ -52,7 +65,7 @@ class MovieControllerTest {
     fun `should return 404 when movie does not exist`() {
         val movieId = UUID.randomUUID()
 
-        whenever(movieService.getMovieById(movieId))
+        whenever(getMovieByIdUseCase.execute(movieId))
             .thenThrow(MovieNotFoundException(movieId))
 
         mockMvc.perform(
@@ -65,6 +78,42 @@ class MovieControllerTest {
                 jsonPath("$.message")
                     .value("Movie with id $movieId not found")
             )
+    }
+
+    @Test
+    fun `should return 204 when movie is deleted`() {
+        val movie = createMovie()
+
+        mockMvc.perform(
+            delete("/movies/{id}", movie.id)
+        )
+            .andExpect(status().isNoContent)
+    }
+
+    @Test
+    fun `should return 404 when movie to delete does not exist`() {
+        val movieId = UUID.randomUUID()
+
+        doThrow(MovieNotFoundException(movieId))
+            .whenever(deleteMovieUseCase)
+            .execute(movieId)
+
+        mockMvc.perform(
+            delete("/movies/{id}", movieId)
+        )
+            .andExpect(status().isNotFound)
+    }
+
+    private fun createMovie(): MovieEntity {
+        return MovieEntity(
+            id = UUID.randomUUID(),
+            title = "Titanic",
+            description = "Titanic description",
+            releaseYear = 1997,
+            durationMinutes = 194,
+            createdAt = LocalDateTime.now(),
+            updatedAt = LocalDateTime.now()
+        )
     }
 
 }
