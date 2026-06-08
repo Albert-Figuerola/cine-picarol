@@ -6,6 +6,6 @@ data class MoviesPageResponse(
     val pageSize: Int,
     val totalPages: Int,
     val totalElements: Long,
-    val hasNext: Boolean,
-    val hasPrevious: Boolean
+    val hasPrevious: Boolean,
+    val hasNext: Boolean
 )
