@@ -1,6 +1,6 @@
 package com.albert.cinepicarol.common.exception
 
-import com.albert.cinepicarol.common.response.ErrorResponse
+import com.albert.cinepicarol.common.response.ApiErrorResponse
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -13,25 +13,26 @@ class GlobalExceptionHandler {
     @ExceptionHandler(MovieNotFoundException::class)
     fun handleMovieNotFound(
         exception: MovieNotFoundException
-    ): ResponseEntity<ErrorResponse> {
+    ): ResponseEntity<ApiErrorResponse> {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(
-                ErrorResponse(
-                    message = exception.message ?: "Movie not found",
+                ApiErrorResponse(
+                    code = exception.code,
+                    message = exception.message
                 )
             )
     }
 
     @ExceptionHandler(IllegalArgumentException::class)
-    fun handleIllegalArgument(
+    fun handleIllegalArgumentException(
         exception: IllegalArgumentException
-    ): ResponseEntity<ErrorResponse> {
+    ): ResponseEntity<ApiErrorResponse> {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(
-                ErrorResponse(
-                    message = exception.message ?: "Invalid request"
+                ApiErrorResponse(
+                    code = "VALIDATION_ERROR",
+                    message = exception.message ?: "Validation error"
                 )
             )
     }
-
 }
