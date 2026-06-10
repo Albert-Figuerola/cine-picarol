@@ -13,17 +13,6 @@ class CreateMovieUseCase(
 ) {
 
     fun execute(request: CreateMovieRequest): MovieEntity {
-        require(request.title.isNotBlank()) {
-            "Movie title cannot be empty"
-        }
-
-        require(request.description.isNotBlank()) {
-            "Movie description cannot be empty"
-        }
-
-        require(request.durationMinutes > 0) {
-            "Movie duration minutes must be greater than zero"
-        }
 
         val movieEntity = MovieEntity(
             id = UUID.randomUUID(),
