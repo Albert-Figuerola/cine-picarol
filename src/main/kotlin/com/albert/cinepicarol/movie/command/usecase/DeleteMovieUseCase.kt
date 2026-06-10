@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.movie.usecase
+package com.albert.cinepicarol.movie.command.usecase
 
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.movie.repository.MovieRepository

@@ -1,8 +1,8 @@
-package com.albert.cinepicarol.movie.usecase
+package com.albert.cinepicarol.movie.command.usecase
 
 import com.albert.cinepicarol.movie.entity.MovieEntity
 import com.albert.cinepicarol.movie.repository.MovieRepository
-import com.albert.cinepicarol.movie.request.CreateMovieRequest
+import com.albert.cinepicarol.movie.command.request.CreateMovieRequest
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.UUID

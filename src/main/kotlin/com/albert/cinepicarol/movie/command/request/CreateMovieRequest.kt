@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.movie.request
+package com.albert.cinepicarol.movie.command.request
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Positive

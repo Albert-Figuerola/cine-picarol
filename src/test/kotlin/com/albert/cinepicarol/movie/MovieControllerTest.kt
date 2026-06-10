@@ -3,21 +3,24 @@ package com.albert.cinepicarol.movie
 import com.albert.cinepicarol.movie.controller.MovieController
 import com.albert.cinepicarol.movie.entity.MovieEntity
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
-import com.albert.cinepicarol.movie.usecase.CreateMovieUseCase
-import com.albert.cinepicarol.movie.usecase.DeleteMovieUseCase
-import com.albert.cinepicarol.movie.usecase.GetMovieByIdUseCase
-import com.albert.cinepicarol.movie.usecase.GetMoviesUseCase
-import com.albert.cinepicarol.movie.usecase.UpdateMovieUseCase
+import com.albert.cinepicarol.movie.command.usecase.CreateMovieUseCase
+import com.albert.cinepicarol.movie.command.usecase.DeleteMovieUseCase
+import com.albert.cinepicarol.movie.query.usecase.GetMovieByIdUseCase
+import com.albert.cinepicarol.movie.query.usecase.GetMoviesUseCase
+import com.albert.cinepicarol.movie.command.usecase.UpdateMovieUseCase
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.doThrow
+import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.time.LocalDateTime
@@ -59,6 +62,110 @@ class MovieControllerTest {
             .andExpect(status().isOk)
 
             .andExpect(jsonPath("$.title").value("Titanic"))
+    }
+
+    @Test
+    fun `should return 400 when title is empty`() {
+        val request = """
+        {
+            "title": "",
+            "description": "Description",
+            "releaseYear": 1997,
+            "durationMinutes": 194
+        }
+    """.trimIndent()
+
+        mockMvc.perform(
+            post("/movies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request)
+        )
+            .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
+            .andExpect(
+                jsonPath("$.message")
+                    .value("Movie title cannot be empty")
+            )
+
+        verifyNoInteractions(createMovieUseCase)
+    }
+
+    @Test
+    fun `should return 400 when title contains only spaces`() {
+        val request = """
+        {
+            "title": "     ",
+            "description": "Description",
+            "releaseYear": 1997,
+            "durationMinutes": 194
+        }
+    """.trimIndent()
+
+        mockMvc.perform(
+            post("/movies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request)
+        )
+            .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
+            .andExpect(
+                jsonPath("$.message")
+                    .value("Movie title cannot be empty")
+            )
+
+        verifyNoInteractions(createMovieUseCase)
+    }
+
+    @Test
+    fun `should return 400 when description is empty`() {
+        val request = """
+        {
+            "title": "Titanic",
+            "description": "",
+            "releaseYear": 1997,
+            "durationMinutes": 194
+        }
+    """.trimIndent()
+
+        mockMvc.perform(
+            post("/movies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request)
+        )
+            .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
+            .andExpect(
+                jsonPath("$.message")
+                    .value("Movie description cannot be empty")
+            )
+
+        verifyNoInteractions(createMovieUseCase)
+    }
+
+    @Test
+    fun `should return 400 when duration is not positive`() {
+        val request = """
+        {
+            "title": "Titanic",
+            "description": "Description",
+            "releaseYear": 1997,
+            "durationMinutes": 0
+        }
+    """.trimIndent()
+
+        mockMvc.perform(
+            post("/movies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request)
+        )
+            .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
+            .andExpect(
+                jsonPath("$.message")
+                    .value("Movie duration minutes must be greater than zero")
+            )
+
+        verifyNoInteractions(createMovieUseCase)
     }
 
     @Test

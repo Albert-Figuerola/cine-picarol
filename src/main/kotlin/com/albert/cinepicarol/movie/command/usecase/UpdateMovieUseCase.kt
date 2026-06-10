@@ -1,9 +1,9 @@
-package com.albert.cinepicarol.movie.usecase
+package com.albert.cinepicarol.movie.command.usecase
 
 import com.albert.cinepicarol.movie.entity.MovieEntity
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.movie.repository.MovieRepository
-import com.albert.cinepicarol.movie.request.UpdateMovieRequest
+import com.albert.cinepicarol.movie.command.request.UpdateMovieRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.UUID

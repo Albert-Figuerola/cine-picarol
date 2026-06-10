@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.movie.response
+package com.albert.cinepicarol.movie.query.response
 
 import java.util.UUID
 

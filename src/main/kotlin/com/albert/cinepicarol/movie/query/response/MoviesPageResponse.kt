@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.movie.response
+package com.albert.cinepicarol.movie.query.response
 
 data class MoviesPageResponse(
     val movies: List<MovieResponse>,
