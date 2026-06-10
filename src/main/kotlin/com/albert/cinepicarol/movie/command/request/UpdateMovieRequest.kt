@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.movie.request
+package com.albert.cinepicarol.movie.command.request
 
 data class UpdateMovieRequest (
     val title: String?,

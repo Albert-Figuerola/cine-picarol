@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.movie.usecase
+package com.albert.cinepicarol.movie.query.usecase
 
 import com.albert.cinepicarol.movie.entity.MovieEntity
 import com.albert.cinepicarol.movie.repository.MovieRepository

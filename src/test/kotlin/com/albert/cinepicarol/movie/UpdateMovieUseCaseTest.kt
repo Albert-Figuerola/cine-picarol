@@ -3,8 +3,8 @@ package com.albert.cinepicarol.movie
 import com.albert.cinepicarol.movie.entity.MovieEntity
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.movie.repository.MovieRepository
-import com.albert.cinepicarol.movie.request.UpdateMovieRequest
-import com.albert.cinepicarol.movie.usecase.UpdateMovieUseCase
+import com.albert.cinepicarol.movie.command.request.UpdateMovieRequest
+import com.albert.cinepicarol.movie.command.usecase.UpdateMovieUseCase
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.never

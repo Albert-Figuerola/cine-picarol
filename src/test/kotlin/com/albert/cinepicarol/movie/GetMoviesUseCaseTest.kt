@@ -2,7 +2,7 @@ package com.albert.cinepicarol.movie
 
 import com.albert.cinepicarol.movie.entity.MovieEntity
 import com.albert.cinepicarol.movie.repository.MovieRepository
-import com.albert.cinepicarol.movie.usecase.GetMoviesUseCase
+import com.albert.cinepicarol.movie.query.usecase.GetMoviesUseCase
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock

@@ -3,7 +3,7 @@ package com.albert.cinepicarol.movie
 import com.albert.cinepicarol.movie.entity.MovieEntity
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.movie.repository.MovieRepository
-import com.albert.cinepicarol.movie.usecase.GetMovieByIdUseCase
+import com.albert.cinepicarol.movie.query.usecase.GetMovieByIdUseCase
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.mock

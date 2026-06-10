@@ -1,15 +1,15 @@
 package com.albert.cinepicarol.movie.controller
 
 import com.albert.cinepicarol.movie.mapper.toResponse
-import com.albert.cinepicarol.movie.request.CreateMovieRequest
-import com.albert.cinepicarol.movie.request.UpdateMovieRequest
-import com.albert.cinepicarol.movie.response.MovieResponse
-import com.albert.cinepicarol.movie.response.MoviesPageResponse
-import com.albert.cinepicarol.movie.usecase.CreateMovieUseCase
-import com.albert.cinepicarol.movie.usecase.DeleteMovieUseCase
-import com.albert.cinepicarol.movie.usecase.GetMovieByIdUseCase
-import com.albert.cinepicarol.movie.usecase.GetMoviesUseCase
-import com.albert.cinepicarol.movie.usecase.UpdateMovieUseCase
+import com.albert.cinepicarol.movie.command.request.CreateMovieRequest
+import com.albert.cinepicarol.movie.command.request.UpdateMovieRequest
+import com.albert.cinepicarol.movie.query.response.MovieResponse
+import com.albert.cinepicarol.movie.query.response.MoviesPageResponse
+import com.albert.cinepicarol.movie.command.usecase.CreateMovieUseCase
+import com.albert.cinepicarol.movie.command.usecase.DeleteMovieUseCase
+import com.albert.cinepicarol.movie.query.usecase.GetMovieByIdUseCase
+import com.albert.cinepicarol.movie.query.usecase.GetMoviesUseCase
+import com.albert.cinepicarol.movie.command.usecase.UpdateMovieUseCase
 import jakarta.validation.Valid
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort

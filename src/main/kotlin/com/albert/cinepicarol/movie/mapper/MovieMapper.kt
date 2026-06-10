@@ -1,8 +1,8 @@
 package com.albert.cinepicarol.movie.mapper
 
 import com.albert.cinepicarol.movie.entity.MovieEntity
-import com.albert.cinepicarol.movie.response.MovieResponse
-import com.albert.cinepicarol.movie.response.MoviesPageResponse
+import com.albert.cinepicarol.movie.query.response.MovieResponse
+import com.albert.cinepicarol.movie.query.response.MoviesPageResponse
 import org.springframework.data.domain.Page
 
 internal fun MovieEntity.toResponse() = MovieResponse(
