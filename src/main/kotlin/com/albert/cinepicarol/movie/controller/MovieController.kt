@@ -10,6 +10,7 @@ import com.albert.cinepicarol.movie.usecase.DeleteMovieUseCase
 import com.albert.cinepicarol.movie.usecase.GetMovieByIdUseCase
 import com.albert.cinepicarol.movie.usecase.GetMoviesUseCase
 import com.albert.cinepicarol.movie.usecase.UpdateMovieUseCase
+import jakarta.validation.Valid
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
@@ -35,6 +36,7 @@ class MovieController (
 
     @PostMapping("/movies")
     fun createMovie(
+        @Valid
         @RequestBody request: CreateMovieRequest
     ) : MovieResponse {
         val movie = createMovieUseCase.execute(request)
