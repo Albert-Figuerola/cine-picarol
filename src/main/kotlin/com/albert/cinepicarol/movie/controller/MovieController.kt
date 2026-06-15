@@ -1,5 +1,6 @@
 package com.albert.cinepicarol.movie.controller
 
+import com.albert.cinepicarol.common.response.ApiResponse
 import com.albert.cinepicarol.movie.mapper.toResponse
 import com.albert.cinepicarol.movie.command.request.CreateMovieRequest
 import com.albert.cinepicarol.movie.command.request.UpdateMovieRequest
@@ -38,17 +39,21 @@ class MovieController (
     fun createMovie(
         @Valid
         @RequestBody request: CreateMovieRequest
-    ) : MovieResponse {
+    ) : ApiResponse<MovieResponse> {
         val movie = createMovieUseCase.execute(request)
-        return movie.toResponse()
+        return ApiResponse(
+            data = movie.toResponse()
+        )
     }
 
     @GetMapping("/movies/{id}")
     fun getMovie(
         @PathVariable id: UUID
-    ) : MovieResponse {
+    ) : ApiResponse<MovieResponse> {
         val movie = getMovieByIdUseCase.execute(id)
-        return movie.toResponse()
+        return ApiResponse(
+            data = movie.toResponse()
+        )
     }
 
     @GetMapping("/movies")
@@ -63,9 +68,11 @@ class MovieController (
     fun updateMovie(
         @PathVariable id: UUID,
         @RequestBody request: UpdateMovieRequest,
-    ) : MovieResponse {
+    ) : ApiResponse<MovieResponse> {
         val movies = updateMovieUseCase.execute(id, request)
-        return movies.toResponse()
+        return ApiResponse(
+            data = movies.toResponse()
+        )
     }
 
     @DeleteMapping("/movies/{id}")

@@ -61,7 +61,7 @@ class MovieControllerTest {
 
             .andExpect(status().isOk)
 
-            .andExpect(jsonPath("$.title").value("Titanic"))
+            .andExpect(jsonPath("$.data.title").value("Titanic"))
     }
 
     @Test
