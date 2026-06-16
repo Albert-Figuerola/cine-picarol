@@ -1,10 +1,10 @@
 package com.albert.cinepicarol.movie
 
-import com.albert.cinepicarol.movie.entity.MovieEntity
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
-import com.albert.cinepicarol.movie.repository.MovieRepository
 import com.albert.cinepicarol.movie.command.request.UpdateMovieRequest
 import com.albert.cinepicarol.movie.command.usecase.UpdateMovieUseCase
+import com.albert.cinepicarol.movie.domain.Movie
+import com.albert.cinepicarol.movie.port.MoviePort
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.never
@@ -13,25 +13,24 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.LocalDateTime
-import java.util.Optional
 import java.util.UUID
 import kotlin.test.assertEquals
 
 class UpdateMovieUseCaseTest {
 
-    private val movieRepository = mock<MovieRepository>()
-    private val updateMovieUseCase = UpdateMovieUseCase(movieRepository)
+    private val moviePort = mock<MoviePort>()
+    private val updateMovieUseCase = UpdateMovieUseCase(moviePort)
 
     @Test
     fun `should update title`() {
         val movie = createMovie()
         val request = updateMovieRequest(title = "Interstellar updated")
 
-        whenever(movieRepository.findById(movie.id))
-            .thenReturn(Optional.of(movie))
+        whenever(moviePort.findById(movie.id))
+            .thenReturn(movie)
 
-        whenever(movieRepository.save(any<MovieEntity>()))
-            .thenAnswer { it.arguments[0] as MovieEntity }
+        whenever(moviePort.save(any<Movie>()))
+            .thenAnswer { it.arguments[0] as Movie }
 
         val result = updateMovieUseCase.execute(movie.id, request)
 
@@ -40,10 +39,10 @@ class UpdateMovieUseCaseTest {
         assertEquals(movie.releaseYear, result.releaseYear)
         assertEquals(movie.durationMinutes, result.durationMinutes)
 
-        verify(movieRepository)
+        verify(moviePort)
             .findById(movie.id)
 
-        verify(movieRepository)
+        verify(moviePort)
             .save(movie)
     }
 
@@ -52,11 +51,11 @@ class UpdateMovieUseCaseTest {
         val movie = createMovie()
         val request = updateMovieRequest(description = "Interstellar updated")
 
-        whenever(movieRepository.findById(movie.id))
-            .thenReturn(Optional.of(movie))
+        whenever(moviePort.findById(movie.id))
+            .thenReturn(movie)
 
-        whenever(movieRepository.save(any<MovieEntity>()))
-            .thenAnswer { it.arguments[0] as MovieEntity }
+        whenever(moviePort.save(any<Movie>()))
+            .thenAnswer { it.arguments[0] as Movie }
 
         val result = updateMovieUseCase.execute(movie.id, request)
 
@@ -65,10 +64,10 @@ class UpdateMovieUseCaseTest {
         assertEquals(movie.releaseYear, result.releaseYear)
         assertEquals(movie.durationMinutes, result.durationMinutes)
 
-        verify(movieRepository)
+        verify(moviePort)
             .findById(movie.id)
 
-        verify(movieRepository)
+        verify(moviePort)
             .save(movie)
     }
 
@@ -77,11 +76,11 @@ class UpdateMovieUseCaseTest {
         val movie = createMovie()
         val request = updateMovieRequest(releaseYear = 2017)
 
-        whenever(movieRepository.findById(movie.id))
-            .thenReturn(Optional.of(movie))
+        whenever(moviePort.findById(movie.id))
+            .thenReturn(movie)
 
-        whenever(movieRepository.save(any<MovieEntity>()))
-            .thenAnswer { it.arguments[0] as MovieEntity }
+        whenever(moviePort.save(any<Movie>()))
+            .thenAnswer { it.arguments[0] as Movie }
 
         val result = updateMovieUseCase.execute(movie.id, request)
 
@@ -90,10 +89,10 @@ class UpdateMovieUseCaseTest {
         assertEquals(2017, result.releaseYear)
         assertEquals(movie.durationMinutes, result.durationMinutes)
 
-        verify(movieRepository)
+        verify(moviePort)
             .findById(movie.id)
 
-        verify(movieRepository)
+        verify(moviePort)
             .save(movie)
     }
 
@@ -102,11 +101,11 @@ class UpdateMovieUseCaseTest {
         val movie = createMovie()
         val request = updateMovieRequest(durationMinutes = 197)
 
-        whenever(movieRepository.findById(movie.id))
-            .thenReturn(Optional.of(movie))
+        whenever(moviePort.findById(movie.id))
+            .thenReturn(movie)
 
-        whenever(movieRepository.save(any<MovieEntity>()))
-            .thenAnswer { it.arguments[0] as MovieEntity }
+        whenever(moviePort.save(any<Movie>()))
+            .thenAnswer { it.arguments[0] as Movie }
 
         val result = updateMovieUseCase.execute(movie.id, request)
 
@@ -115,10 +114,10 @@ class UpdateMovieUseCaseTest {
         assertEquals(movie.releaseYear, result.releaseYear)
         assertEquals(197, result.durationMinutes)
 
-        verify(movieRepository)
+        verify(moviePort)
             .findById(movie.id)
 
-        verify(movieRepository)
+        verify(moviePort)
             .save(movie)
     }
 
@@ -132,11 +131,11 @@ class UpdateMovieUseCaseTest {
             durationMinutes = 197
         )
 
-        whenever(movieRepository.findById(movie.id))
-            .thenReturn(Optional.of(movie))
+        whenever(moviePort.findById(movie.id))
+            .thenReturn(movie)
 
-        whenever(movieRepository.save(any<MovieEntity>()))
-            .thenAnswer { it.arguments[0] as MovieEntity }
+        whenever(moviePort.save(any<Movie>()))
+            .thenAnswer { it.arguments[0] as Movie }
 
         val result = updateMovieUseCase.execute(movie.id, request)
 
@@ -145,10 +144,10 @@ class UpdateMovieUseCaseTest {
         assertEquals(2017, result.releaseYear)
         assertEquals(197, result.durationMinutes)
 
-        verify(movieRepository)
+        verify(moviePort)
             .findById(movie.id)
 
-        verify(movieRepository)
+        verify(moviePort)
             .save(movie)
     }
 
@@ -160,8 +159,8 @@ class UpdateMovieUseCaseTest {
             title = "Interstellar updated"
         )
 
-        whenever(movieRepository.findById(movieId))
-            .thenReturn(Optional.empty())
+        whenever(moviePort.findById(movieId))
+            .thenReturn(null)
 
         val exception = assertThrows<MovieNotFoundException> {
             updateMovieUseCase.execute(movieId, request)
@@ -172,11 +171,11 @@ class UpdateMovieUseCaseTest {
             exception.message
         )
 
-        verify(movieRepository)
+        verify(moviePort)
             .findById(movieId)
 
-        verify(movieRepository, never())
-            .save(any<MovieEntity>())
+        verify(moviePort, never())
+            .save(any<Movie>())
     }
 
     @Test
@@ -186,11 +185,11 @@ class UpdateMovieUseCaseTest {
             title = "",
         )
 
-        whenever(movieRepository.findById(movie.id))
-            .thenReturn(Optional.of(movie))
+        whenever(moviePort.findById(movie.id))
+            .thenReturn(movie)
 
-        whenever(movieRepository.save(any<MovieEntity>()))
-            .thenAnswer { it.arguments[0] as MovieEntity }
+        whenever(moviePort.save(any<Movie>()))
+            .thenAnswer { it.arguments[0] as Movie }
 
         val exception = assertThrows<IllegalArgumentException> {
             updateMovieUseCase.execute(movie.id, request)
@@ -201,11 +200,11 @@ class UpdateMovieUseCaseTest {
             exception.message
         )
 
-        verify(movieRepository)
+        verify(moviePort)
             .findById(movie.id)
 
-        verify(movieRepository, never())
-            .save(any<MovieEntity>())
+        verify(moviePort, never())
+            .save(any<Movie>())
     }
 
     @Test
@@ -215,11 +214,11 @@ class UpdateMovieUseCaseTest {
             durationMinutes = 0,
         )
 
-        whenever(movieRepository.findById(movie.id))
-            .thenReturn(Optional.of(movie))
+        whenever(moviePort.findById(movie.id))
+            .thenReturn(movie)
 
-        whenever(movieRepository.save(any<MovieEntity>()))
-            .thenAnswer { it.arguments[0] as MovieEntity }
+        whenever(moviePort.save(any<Movie>()))
+            .thenAnswer { it.arguments[0] as Movie }
 
         val exception = assertThrows<IllegalArgumentException> {
             updateMovieUseCase.execute(movie.id, request)
@@ -230,11 +229,11 @@ class UpdateMovieUseCaseTest {
             exception.message
         )
 
-        verify(movieRepository)
+        verify(moviePort)
             .findById(movie.id)
 
-        verify(movieRepository, never())
-            .save(any<MovieEntity>())
+        verify(moviePort, never())
+            .save(any<Movie>())
     }
 
     private fun createMovie(
@@ -242,8 +241,8 @@ class UpdateMovieUseCaseTest {
         description: String = "Titanic description",
         releaseYear: Int? = 1997,
         durationMinutes: Int = 194
-    ): MovieEntity {
-        return MovieEntity(
+    ): Movie {
+        return Movie(
             id = UUID.randomUUID(),
             title = title,
             description = description,

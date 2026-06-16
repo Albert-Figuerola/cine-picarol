@@ -1,22 +1,20 @@
 package com.albert.cinepicarol.movie.command.usecase
 
-import com.albert.cinepicarol.movie.entity.MovieEntity
-import com.albert.cinepicarol.movie.repository.MovieRepository
 import com.albert.cinepicarol.movie.command.request.CreateMovieRequest
 import com.albert.cinepicarol.movie.domain.Movie
-import com.albert.cinepicarol.movie.mapper.toDomain
+import com.albert.cinepicarol.movie.port.MoviePort
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
 class CreateMovieUseCase(
-    private val movieRepository: MovieRepository
+    private val moviePort: MoviePort
 ) {
 
     fun execute(request: CreateMovieRequest): Movie {
 
-        val movieEntity = MovieEntity(
+        val movie = Movie(
             id = UUID.randomUUID(),
             title = request.title,
             description = request.description,
@@ -26,7 +24,7 @@ class CreateMovieUseCase(
             updatedAt = LocalDateTime.now()
         )
 
-        return movieRepository.save(movieEntity).toDomain()
+        return moviePort.save(movie)
     }
 
 }

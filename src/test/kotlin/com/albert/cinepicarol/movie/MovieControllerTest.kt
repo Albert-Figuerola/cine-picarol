@@ -1,13 +1,13 @@
 package com.albert.cinepicarol.movie
 
 import com.albert.cinepicarol.movie.controller.MovieController
-import com.albert.cinepicarol.movie.entity.MovieEntity
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.movie.command.usecase.CreateMovieUseCase
 import com.albert.cinepicarol.movie.command.usecase.DeleteMovieUseCase
 import com.albert.cinepicarol.movie.query.usecase.GetMovieByIdUseCase
 import com.albert.cinepicarol.movie.query.usecase.GetMoviesUseCase
 import com.albert.cinepicarol.movie.command.usecase.UpdateMovieUseCase
+import com.albert.cinepicarol.movie.domain.Movie
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.doThrow
 import org.mockito.Mockito.verifyNoInteractions
@@ -211,8 +211,8 @@ class MovieControllerTest {
             .andExpect(status().isNotFound)
     }
 
-    private fun createMovie(): MovieEntity {
-        return MovieEntity(
+    private fun createMovie(): Movie {
+        return Movie(
             id = UUID.randomUUID(),
             title = "Titanic",
             description = "Titanic description",
