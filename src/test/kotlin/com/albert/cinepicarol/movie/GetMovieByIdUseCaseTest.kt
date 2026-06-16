@@ -1,8 +1,8 @@
 package com.albert.cinepicarol.movie
 
-import com.albert.cinepicarol.movie.entity.MovieEntity
+import com.albert.cinepicarol.movie.domain.Movie
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
-import com.albert.cinepicarol.movie.repository.MovieRepository
+import com.albert.cinepicarol.movie.port.MoviePort
 import com.albert.cinepicarol.movie.query.usecase.GetMovieByIdUseCase
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -10,27 +10,26 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.LocalDateTime
-import java.util.Optional
 import java.util.UUID
 import kotlin.test.assertEquals
 
 class GetMovieByIdUseCaseTest {
 
-    private val movieRepository = mock<MovieRepository>()
-    private val getMovieByIdUseCase = GetMovieByIdUseCase(movieRepository)
+    private val moviePort = mock<MoviePort>()
+    private val getMovieByIdUseCase = GetMovieByIdUseCase(moviePort)
 
     @Test
     fun `should return movie when movie exists`() {
         val movie = createMovie()
 
-        whenever(movieRepository.findById(movie.id))
-            .thenReturn(Optional.of(movie))
+        whenever(moviePort.findById(movie.id))
+            .thenReturn(movie)
 
         val result = getMovieByIdUseCase.execute(movie.id)
 
         assertEquals(movie.id, result.id)
 
-        verify(movieRepository)
+        verify(moviePort)
             .findById(movie.id)
     }
 
@@ -38,19 +37,19 @@ class GetMovieByIdUseCaseTest {
     fun `should throw exception when movie does not exist`() {
         val movieId = UUID.randomUUID()
 
-        whenever(movieRepository.findById(movieId))
-            .thenReturn(Optional.empty())
+        whenever(moviePort.findById(movieId))
+            .thenReturn(null)
 
         assertThrows<MovieNotFoundException> {
             getMovieByIdUseCase.execute(movieId)
         }
 
-        verify(movieRepository)
+        verify(moviePort)
             .findById(movieId)
     }
 
-    private fun createMovie(): MovieEntity {
-        return MovieEntity(
+    private fun createMovie(): Movie {
+        return Movie(
             id = UUID.randomUUID(),
             title = "Titanic",
             description = "Titanic description",

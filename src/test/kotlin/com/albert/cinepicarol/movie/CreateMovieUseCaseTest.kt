@@ -1,9 +1,9 @@
 package com.albert.cinepicarol.movie
 
-import com.albert.cinepicarol.movie.entity.MovieEntity
-import com.albert.cinepicarol.movie.repository.MovieRepository
 import com.albert.cinepicarol.movie.command.request.CreateMovieRequest
 import com.albert.cinepicarol.movie.command.usecase.CreateMovieUseCase
+import com.albert.cinepicarol.movie.domain.Movie
+import com.albert.cinepicarol.movie.port.MoviePort
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -13,15 +13,15 @@ import kotlin.test.assertEquals
 
 class CreateMovieUseCaseTest {
 
-    private val movieRepository = mock<MovieRepository>()
-    private val createMovieUseCase = CreateMovieUseCase(movieRepository)
+    private val moviePort = mock<MoviePort>()
+    private val createMovieUseCase = CreateMovieUseCase(moviePort)
 
     @Test
     fun `should create movie`() {
         val request = createMovieRequest()
 
-        whenever(movieRepository.save(any<MovieEntity>()))
-            .thenAnswer { it.arguments[0] as MovieEntity }
+        whenever(moviePort.save(any<Movie>()))
+            .thenAnswer { it.arguments[0] as Movie }
 
         val result = createMovieUseCase.execute(request)
 
@@ -30,7 +30,7 @@ class CreateMovieUseCaseTest {
         assertEquals(request.releaseYear, result.releaseYear)
         assertEquals(request.durationMinutes, result.durationMinutes)
 
-        verify(movieRepository).save(any<MovieEntity>())
+        verify(moviePort).save(any<Movie>())
     }
 
     private fun createMovieRequest(

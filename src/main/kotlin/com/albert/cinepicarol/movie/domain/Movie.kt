@@ -5,10 +5,10 @@ import java.util.UUID
 
 data class Movie (
     val id: UUID,
-    val title: String,
-    val description: String,
-    val releaseYear: Int?,
-    val durationMinutes: Int,
+    var title: String,
+    var description: String,
+    var releaseYear: Int?,
+    var durationMinutes: Int,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime
 )

@@ -1,21 +1,19 @@
 package com.albert.cinepicarol.movie.command.usecase
 
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
-import com.albert.cinepicarol.movie.repository.MovieRepository
 import com.albert.cinepicarol.movie.command.request.UpdateMovieRequest
 import com.albert.cinepicarol.movie.domain.Movie
-import com.albert.cinepicarol.movie.mapper.toDomain
-import org.springframework.data.repository.findByIdOrNull
+import com.albert.cinepicarol.movie.port.MoviePort
 import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
 class UpdateMovieUseCase(
-    private val movieRepository: MovieRepository
+    private val moviePort: MoviePort
 ) {
 
     fun execute(id: UUID, request: UpdateMovieRequest): Movie {
-        val movie = movieRepository.findByIdOrNull(id) ?: throw MovieNotFoundException(id)
+        val movie = moviePort.findById(id) ?: throw MovieNotFoundException(id)
 
         request.title?.let {
             require(it.isNotBlank()) {
@@ -49,7 +47,7 @@ class UpdateMovieUseCase(
             movie.durationMinutes = it
         }
 
-        return movieRepository.save(movie).toDomain()
+        return moviePort.save(movie)
     }
 
 }
