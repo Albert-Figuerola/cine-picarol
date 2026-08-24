@@ -36,6 +36,7 @@ class MovieController (
 ) {
 
     @PostMapping("/movies")
+    @ResponseStatus(HttpStatus.CREATED)
     fun createMovie(
         @Valid
         @RequestBody request: CreateMovieRequest
