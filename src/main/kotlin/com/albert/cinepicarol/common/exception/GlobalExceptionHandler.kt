@@ -2,6 +2,7 @@ package com.albert.cinepicarol.common.exception
 
 import com.albert.cinepicarol.common.response.ApiErrorResponse
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
+import com.albert.cinepicarol.user.exception.UserAlreadyExistsException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -53,6 +54,19 @@ class GlobalExceptionHandler {
                 ApiErrorResponse(
                     code = "VALIDATION_ERROR",
                     message = message
+                )
+            )
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException::class)
+    fun handleUserAlreadyExistsException(
+        exception: UserAlreadyExistsException
+    ): ResponseEntity<ApiErrorResponse> {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(
+                ApiErrorResponse(
+                    code = exception.code,
+                    message = exception.message
                 )
             )
     }
