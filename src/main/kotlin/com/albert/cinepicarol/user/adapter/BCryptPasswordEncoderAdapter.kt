@@ -13,4 +13,7 @@ class BCryptPasswordEncoderAdapter : PasswordEncoderPort {
         return passwordEncoder.encode(rawPassword)
     }
 
+    override fun matches(rawPassword: String, encodedPassword: String): Boolean {
+        return passwordEncoder.matches(rawPassword, encodedPassword)
+    }
 }
