@@ -1,5 +1,6 @@
 package com.albert.cinepicarol.common.exception
 
+import com.albert.cinepicarol.auth.exception.InvalidCredentialsException
 import com.albert.cinepicarol.common.response.ApiErrorResponse
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.user.exception.UserAlreadyExistsException
@@ -11,6 +12,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
+
+    @ExceptionHandler(InvalidCredentialsException::class)
+    fun handleInvalidCredentials(
+        exception: InvalidCredentialsException
+    ): ResponseEntity<ApiErrorResponse> {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(
+                ApiErrorResponse(
+                    code = exception.code,
+                    message = exception.message
+                )
+            )
+    }
 
     @ExceptionHandler(MovieNotFoundException::class)
     fun handleMovieNotFound(
