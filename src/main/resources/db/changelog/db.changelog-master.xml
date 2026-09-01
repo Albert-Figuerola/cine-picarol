@@ -11,5 +11,6 @@
     <include file="db/changelog/changes/002-create-movie-table.xml"/>
     <include file="db/changelog/changes/003-add-release-year-to-movie.xml"/>
     <include file="db/changelog/changes/004-create-users-table.xml"/>
+    <include file="db/changelog/changes/005-rename-movie-table-to-movies.xml"/>
 
 </databaseChangeLog>
