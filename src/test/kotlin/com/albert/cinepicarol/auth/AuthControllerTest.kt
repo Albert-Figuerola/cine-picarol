@@ -5,6 +5,7 @@ import com.albert.cinepicarol.auth.command.usecase.LoginUseCase
 import com.albert.cinepicarol.auth.controller.AuthController
 import com.albert.cinepicarol.auth.domain.LoginResult
 import com.albert.cinepicarol.auth.exception.InvalidCredentialsException
+import com.albert.cinepicarol.auth.port.TokenPort
 import com.albert.cinepicarol.user.domain.User
 import com.albert.cinepicarol.user.domain.UserRole
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -39,6 +40,9 @@ class AuthControllerTest {
     @MockitoBean
     private lateinit var loginUseCase: LoginUseCase
 
+    @MockitoBean
+    private lateinit var tokenPort: TokenPort
+
     @Test
     fun `should return 200 when credentials are valid`() {
         val request = loginRequest()
@@ -49,7 +53,7 @@ class AuthControllerTest {
         whenever(loginUseCase.execute(any<LoginRequest>())).thenReturn(loginResult)
 
         mockMvc.perform(
-            post("/auth/login")
+            post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
@@ -71,7 +75,7 @@ class AuthControllerTest {
             .execute(any<LoginRequest>())
 
         mockMvc.perform(
-            post("/auth/login")
+            post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
@@ -87,7 +91,7 @@ class AuthControllerTest {
         val request = loginRequest().copy(email = "invalid-email")
 
         mockMvc.perform(
-            post("/auth/login")
+            post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
@@ -102,7 +106,7 @@ class AuthControllerTest {
         val request = loginRequest().copy(password = "")
 
         mockMvc.perform(
-            post("/auth/login")
+            post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )

@@ -31,14 +31,21 @@ class SecurityConfig(
             }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/auth/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                    .requestMatchers("/api/v1/auth/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
                     .requestMatchers("/health").permitAll()
 
-                    .requestMatchers(HttpMethod.GET, "/movies/**").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/movies/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.PATCH, "/movies/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/movies/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/movies/**")
+                    .hasAnyRole("USER", "ADMIN")
+
+                    .requestMatchers(HttpMethod.POST, "/api/v1/movies/**")
+                    .hasRole("ADMIN")
+
+                    .requestMatchers(HttpMethod.PATCH, "/api/v1/movies/**")
+                    .hasRole("ADMIN")
+
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/movies/**")
+                    .hasRole("ADMIN")
 
                     .anyRequest().authenticated()
             }

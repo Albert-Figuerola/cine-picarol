@@ -22,11 +22,13 @@ import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
+@RequestMapping("/api/v1/movies")
 class MovieController (
     private val createMovieUseCase: CreateMovieUseCase,
     private val getMovieByIdUseCase: GetMovieByIdUseCase,
@@ -35,7 +37,7 @@ class MovieController (
     private val deleteMovieUseCase: DeleteMovieUseCase
 ) {
 
-    @PostMapping("/movies")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createMovie(
         @Valid
@@ -47,7 +49,7 @@ class MovieController (
         )
     }
 
-    @GetMapping("/movies/{id}")
+    @GetMapping("/{id}")
     fun getMovie(
         @PathVariable id: UUID
     ) : ApiResponse<MovieResponse> {
@@ -57,7 +59,7 @@ class MovieController (
         )
     }
 
-    @GetMapping("/movies")
+    @GetMapping
     fun getMovies(
         @PageableDefault(size = 10, sort = ["title"], direction = Sort.Direction.DESC) pageable: Pageable
     ) : MoviesPageResponse {
@@ -65,7 +67,7 @@ class MovieController (
         return movies.toResponse()
     }
 
-    @PatchMapping("/movies/{id}")
+    @PatchMapping("/{id}")
     fun updateMovie(
         @PathVariable id: UUID,
         @RequestBody request: UpdateMovieRequest,
@@ -76,7 +78,7 @@ class MovieController (
         )
     }
 
-    @DeleteMapping("/movies/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteMovie(
         @PathVariable id: UUID

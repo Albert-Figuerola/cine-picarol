@@ -1,5 +1,6 @@
 package com.albert.cinepicarol.movie
 
+import com.albert.cinepicarol.auth.port.TokenPort
 import com.albert.cinepicarol.movie.controller.MovieController
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.movie.command.usecase.CreateMovieUseCase
@@ -48,6 +49,9 @@ class MovieControllerTest {
     @MockitoBean
     private lateinit var deleteMovieUseCase: DeleteMovieUseCase
 
+    @MockitoBean
+    private lateinit var tokenPort: TokenPort
+
     @Test
     fun `should return 200 when movie exists`() {
         val movie = createMovie()
@@ -56,7 +60,7 @@ class MovieControllerTest {
             .thenReturn(movie)
 
         mockMvc.perform(
-            get("/movies/{id}", movie.id)
+            get("/api/v1/movies/{id}", movie.id)
         )
 
             .andExpect(status().isOk)
@@ -76,7 +80,7 @@ class MovieControllerTest {
     """.trimIndent()
 
         mockMvc.perform(
-            post("/movies")
+            post("/api/v1/movies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request)
         )
@@ -102,7 +106,7 @@ class MovieControllerTest {
     """.trimIndent()
 
         mockMvc.perform(
-            post("/movies")
+            post("/api/v1/movies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request)
         )
@@ -128,7 +132,7 @@ class MovieControllerTest {
     """.trimIndent()
 
         mockMvc.perform(
-            post("/movies")
+            post("/api/v1/movies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request)
         )
@@ -154,7 +158,7 @@ class MovieControllerTest {
     """.trimIndent()
 
         mockMvc.perform(
-            post("/movies")
+            post("/api/v1/movies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request)
         )
@@ -176,7 +180,7 @@ class MovieControllerTest {
             .thenThrow(MovieNotFoundException(movieId))
 
         mockMvc.perform(
-            get("/movies/{id}", movieId)
+            get("/api/v1/movies/{id}", movieId)
         )
 
             .andExpect(status().isNotFound)
@@ -192,7 +196,7 @@ class MovieControllerTest {
         val movie = createMovie()
 
         mockMvc.perform(
-            delete("/movies/{id}", movie.id)
+            delete("/api/v1/movies/{id}", movie.id)
         )
             .andExpect(status().isNoContent)
     }
@@ -206,7 +210,7 @@ class MovieControllerTest {
             .execute(movieId)
 
         mockMvc.perform(
-            delete("/movies/{id}", movieId)
+            delete("/api/v1/movies/{id}", movieId)
         )
             .andExpect(status().isNotFound)
     }

@@ -4,6 +4,7 @@ import com.albert.cinepicarol.auth.exception.InvalidCredentialsException
 import com.albert.cinepicarol.common.response.ApiErrorResponse
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.user.exception.UserAlreadyExistsException
+import com.albert.cinepicarol.user.exception.UserNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -77,6 +78,19 @@ class GlobalExceptionHandler {
         exception: UserAlreadyExistsException
     ): ResponseEntity<ApiErrorResponse> {
         return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(
+                ApiErrorResponse(
+                    code = exception.code,
+                    message = exception.message
+                )
+            )
+    }
+
+    @ExceptionHandler(UserNotFoundException::class)
+    fun handleUserNotFoundExceptionException(
+        exception: UserNotFoundException
+    ): ResponseEntity<ApiErrorResponse> {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(
                 ApiErrorResponse(
                     code = exception.code,

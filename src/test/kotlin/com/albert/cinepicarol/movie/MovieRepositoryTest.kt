@@ -1,5 +1,6 @@
 package com.albert.cinepicarol.movie
 
+import com.albert.cinepicarol.auth.port.TokenPort
 import com.albert.cinepicarol.movie.entity.MovieEntity
 import com.albert.cinepicarol.movie.repository.MovieRepository
 import org.junit.jupiter.api.Test
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.assertNotNull
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.time.LocalDateTime
 import java.util.UUID
 import kotlin.test.assertEquals
@@ -16,6 +18,9 @@ class MovieRepositoryTest {
 
     @Autowired
     private lateinit var movieRepository: MovieRepository
+
+    @MockitoBean
+    private lateinit var tokenPort: TokenPort
 
     @Test
     fun shouldSaveMovie() {

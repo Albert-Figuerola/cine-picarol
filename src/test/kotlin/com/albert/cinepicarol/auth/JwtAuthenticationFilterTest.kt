@@ -66,7 +66,7 @@ class JwtAuthenticationFilterTest {
             .thenReturn(emptyMoviesPage())
 
         mockMvc.perform(
-            get("/movies")
+            get("/api/v1/movies")
                 .header(
                     "Authorization",
                     "Bearer valid-token"
@@ -81,7 +81,7 @@ class JwtAuthenticationFilterTest {
             .thenReturn(false)
 
         mockMvc.perform(
-            get("/movies")
+            get("/api/v1/movies")
                 .header(
                     "Authorization",
                     "Bearer invalid-token"
@@ -93,7 +93,7 @@ class JwtAuthenticationFilterTest {
     @Test
     fun `should return 401 when authorization header does not use bearer`() {
         mockMvc.perform(
-            get("/movies")
+            get("/api/v1/movies")
                 .header(
                     "Authorization",
                     "Basic something"
