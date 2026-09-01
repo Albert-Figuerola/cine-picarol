@@ -61,7 +61,7 @@ class MovieControllerSecurityTest {
     @WithAnonymousUser
     fun `should return 401 when getting movies without authentication`() {
         mockMvc.perform(
-            get("/movies")
+            get("/api/v1/movies")
         )
             .andExpect(status().isUnauthorized)
 
@@ -75,7 +75,7 @@ class MovieControllerSecurityTest {
             .thenReturn(emptyMoviesPage())
 
         mockMvc.perform(
-            get("/movies")
+            get("/api/v1/movies")
         )
             .andExpect(status().isOk)
     }
@@ -84,7 +84,7 @@ class MovieControllerSecurityTest {
     @WithMockUser(roles = ["USER"])
     fun `should return 403 when USER creates movie`() {
         mockMvc.perform(
-            post("/movies")
+            post("/api/v1/movies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(validCreateMovieRequest())
         )
@@ -100,7 +100,7 @@ class MovieControllerSecurityTest {
             .thenReturn(createMovie())
 
         mockMvc.perform(
-            post("/movies")
+            post("/api/v1/movies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(validCreateMovieRequest())
         )

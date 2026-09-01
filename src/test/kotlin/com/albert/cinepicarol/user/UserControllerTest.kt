@@ -1,7 +1,9 @@
 package com.albert.cinepicarol.user
 
+import com.albert.cinepicarol.auth.port.TokenPort
 import com.albert.cinepicarol.user.command.request.CreateUserRequest
 import com.albert.cinepicarol.user.command.usecase.CreateUserUseCase
+import com.albert.cinepicarol.user.command.usecase.GetCurrentUserUseCase
 import com.albert.cinepicarol.user.controller.UserController
 import com.albert.cinepicarol.user.domain.User
 import com.albert.cinepicarol.user.domain.UserRole
@@ -17,8 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -38,6 +42,12 @@ class UserControllerTest() {
     @MockitoBean
     private lateinit var createUserUseCase: CreateUserUseCase
 
+    @MockitoBean
+    private lateinit var getCurrentUserUseCase: GetCurrentUserUseCase
+
+    @MockitoBean
+    private lateinit var tokenPort: TokenPort
+
     @Test
     fun `should return 201 when user is created`() {
         val user = createUser()
@@ -46,7 +56,7 @@ class UserControllerTest() {
             .thenReturn(user)
 
         mockMvc.perform(
-            post("/users")
+            post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     objectMapper.writeValueAsString(createUserRequest())
@@ -71,7 +81,7 @@ class UserControllerTest() {
             .execute(any<CreateUserRequest>())
 
         mockMvc.perform(
-            post("/users")
+            post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
@@ -87,7 +97,7 @@ class UserControllerTest() {
         val request = createUserRequest()
 
         mockMvc.perform(
-            post("/users")
+            post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     objectMapper.writeValueAsString(request.copy(firstName = ""))
@@ -105,7 +115,7 @@ class UserControllerTest() {
         val request = createUserRequest().copy(lastName = "")
 
         mockMvc.perform(
-            post("/users")
+            post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
@@ -121,7 +131,7 @@ class UserControllerTest() {
         val request = createUserRequest().copy(email = "invalid-email")
 
         mockMvc.perform(
-            post("/users")
+            post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
@@ -137,7 +147,7 @@ class UserControllerTest() {
         val request = createUserRequest().copy(password = "")
 
         mockMvc.perform(
-            post("/users")
+            post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
@@ -146,6 +156,29 @@ class UserControllerTest() {
             .andExpect(jsonPath("$.message").value("Password cannot be empty"))
 
         verifyNoInteractions(createUserUseCase)
+    }
+
+    @Test
+    fun `should return 200 when getting current user`() {
+        val user = createUser()
+        val authentication = UsernamePasswordAuthenticationToken(
+            user.id,
+            null,
+            emptyList()
+        )
+
+        whenever(getCurrentUserUseCase.execute(user.id))
+            .thenReturn(user)
+
+        mockMvc.perform(
+            get("/api/v1/users/me")
+                .principal(authentication)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.data.id").value(user.id.toString()))
+            .andExpect(jsonPath("$.data.email").value(user.email))
+
+        verify(getCurrentUserUseCase).execute(user.id)
     }
 
     private fun createUserRequest() = CreateUserRequest(
