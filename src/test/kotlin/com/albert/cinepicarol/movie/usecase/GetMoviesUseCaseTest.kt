@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.movie
+package com.albert.cinepicarol.movie.usecase
 
 import com.albert.cinepicarol.movie.domain.Movie
 import com.albert.cinepicarol.movie.domain.MoviesPageDomain

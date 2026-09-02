@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.user
+package com.albert.cinepicarol.user.usecase
 
 import com.albert.cinepicarol.user.command.usecase.GetCurrentUserUseCase
 import com.albert.cinepicarol.user.domain.User

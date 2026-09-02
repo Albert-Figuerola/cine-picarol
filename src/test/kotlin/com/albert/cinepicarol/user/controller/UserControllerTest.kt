@@ -1,10 +1,10 @@
-package com.albert.cinepicarol.user
+package com.albert.cinepicarol.user.controller
 
 import com.albert.cinepicarol.auth.port.TokenPort
 import com.albert.cinepicarol.user.command.request.CreateUserRequest
 import com.albert.cinepicarol.user.command.usecase.CreateUserUseCase
 import com.albert.cinepicarol.user.command.usecase.GetCurrentUserUseCase
-import com.albert.cinepicarol.user.controller.UserController
+import com.albert.cinepicarol.user.command.usecase.UpdateCurrentUserUseCase
 import com.albert.cinepicarol.user.domain.User
 import com.albert.cinepicarol.user.domain.UserRole
 import com.albert.cinepicarol.user.exception.UserAlreadyExistsException
@@ -27,6 +27,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.time.LocalDateTime
+import com.albert.cinepicarol.user.command.model.UpdateUserCommand
+import org.mockito.kotlin.eq
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import java.util.UUID
 
 @WebMvcTest(UserController::class)
@@ -44,6 +47,9 @@ class UserControllerTest() {
 
     @MockitoBean
     private lateinit var getCurrentUserUseCase: GetCurrentUserUseCase
+
+    @MockitoBean
+    private lateinit var updateCurrentUserUseCase: UpdateCurrentUserUseCase
 
     @MockitoBean
     private lateinit var tokenPort: TokenPort
@@ -179,6 +185,158 @@ class UserControllerTest() {
             .andExpect(jsonPath("$.data.email").value(user.email))
 
         verify(getCurrentUserUseCase).execute(user.id)
+    }
+
+    @Test
+    fun `should return 200 when current user is updated`() {
+        val user = createUser()
+        val authentication = UsernamePasswordAuthenticationToken(
+            user.id,
+            null,
+            emptyList()
+        )
+
+        whenever(
+            updateCurrentUserUseCase.execute(
+                eq(user.id),
+                any<UpdateUserCommand>()
+            )
+        ).thenReturn(user.copy(firstName = "Sergi"))
+
+        mockMvc.perform(
+            patch("/api/v1/users/me")
+                .principal(authentication)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                {
+                    "firstName": "Sergi"
+                }
+                """.trimIndent()
+                )
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.data.id").value(user.id.toString()))
+            .andExpect(jsonPath("$.data.firstName").value("Sergi"))
+            .andExpect(jsonPath("$.data.lastName").value(user.lastName))
+            .andExpect(jsonPath("$.data.email").value(user.email))
+
+        verify(updateCurrentUserUseCase).execute(
+            eq(user.id),
+            any<UpdateUserCommand>()
+        )
+    }
+
+    @Test
+    fun `should return 400 when first name is empty when updating current user`() {
+        val user = createUser()
+        val authentication = UsernamePasswordAuthenticationToken(
+            user.id,
+            null,
+            emptyList()
+        )
+
+        mockMvc.perform(
+            patch("/api/v1/users/me")
+                .principal(authentication)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                {
+                    "firstName": ""
+                }
+                """.trimIndent()
+                )
+        )
+            .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
+            .andExpect(jsonPath("$.message").value("Firstname cannot be empty"))
+
+        verifyNoInteractions(updateCurrentUserUseCase)
+    }
+
+    @Test
+    fun `should return 400 when first name is whitespace when updating current user`() {
+        val user = createUser()
+        val authentication = UsernamePasswordAuthenticationToken(
+            user.id,
+            null,
+            emptyList()
+        )
+
+        mockMvc.perform(
+            patch("/api/v1/users/me")
+                .principal(authentication)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                {
+                    "firstName": "    "
+                }
+                """.trimIndent()
+                )
+        )
+            .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
+            .andExpect(jsonPath("$.message").value("Firstname cannot be empty"))
+
+        verifyNoInteractions(updateCurrentUserUseCase)
+    }
+
+    @Test
+    fun `should return 400 when last name is empty when updating current user`() {
+        val user = createUser()
+        val authentication = UsernamePasswordAuthenticationToken(
+            user.id,
+            null,
+            emptyList()
+        )
+
+        mockMvc.perform(
+            patch("/api/v1/users/me")
+                .principal(authentication)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                {
+                    "lastName": ""
+                }
+                """.trimIndent()
+                )
+        )
+            .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
+            .andExpect(jsonPath("$.message").value("Lastname cannot be empty"))
+
+        verifyNoInteractions(updateCurrentUserUseCase)
+    }
+
+    @Test
+    fun `should return 400 when last name is whitespace when updating current user`() {
+        val user = createUser()
+        val authentication = UsernamePasswordAuthenticationToken(
+            user.id,
+            null,
+            emptyList()
+        )
+
+        mockMvc.perform(
+            patch("/api/v1/users/me")
+                .principal(authentication)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                {
+                    "lastName": "    "
+                }
+                """.trimIndent()
+                )
+        )
+            .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
+            .andExpect(jsonPath("$.message").value("Lastname cannot be empty"))
+
+        verifyNoInteractions(updateCurrentUserUseCase)
     }
 
     private fun createUserRequest() = CreateUserRequest(
