@@ -1,15 +1,19 @@
 package com.albert.cinepicarol.user.controller
 
 import com.albert.cinepicarol.common.response.ApiResponse
+import com.albert.cinepicarol.user.command.mapper.toCommand
 import com.albert.cinepicarol.user.command.request.CreateUserRequest
+import com.albert.cinepicarol.user.command.request.UpdateUserRequest
 import com.albert.cinepicarol.user.command.usecase.CreateUserUseCase
 import com.albert.cinepicarol.user.command.usecase.GetCurrentUserUseCase
+import com.albert.cinepicarol.user.command.usecase.UpdateCurrentUserUseCase
 import com.albert.cinepicarol.user.mapper.toResponse
 import com.albert.cinepicarol.user.query.response.UserResponse
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,7 +25,8 @@ import java.util.UUID
 @RequestMapping("/api/v1/users")
 class UserController(
     private val createUserUseCase: CreateUserUseCase,
-    private val getCurrentUserUseCase: GetCurrentUserUseCase
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val updateCurrentUserUseCase: UpdateCurrentUserUseCase
 ) {
 
     @PostMapping
@@ -42,6 +47,19 @@ class UserController(
     ): ApiResponse<UserResponse> {
         val userId = authentication.principal as UUID
         val user = getCurrentUserUseCase.execute(userId)
+
+        return ApiResponse(
+            data = user.toResponse()
+        )
+    }
+
+    @PatchMapping("/me")
+    fun updateUser(
+        @Valid @RequestBody request: UpdateUserRequest,
+        authentication: Authentication
+    ): ApiResponse<UserResponse> {
+        val userId = authentication.principal as UUID
+        val user = updateCurrentUserUseCase.execute(userId, request.toCommand())
 
         return ApiResponse(
             data = user.toResponse()

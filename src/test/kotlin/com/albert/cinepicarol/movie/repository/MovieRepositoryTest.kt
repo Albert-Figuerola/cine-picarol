@@ -1,8 +1,7 @@
-package com.albert.cinepicarol.movie
+package com.albert.cinepicarol.movie.repository
 
 import com.albert.cinepicarol.auth.port.TokenPort
 import com.albert.cinepicarol.movie.entity.MovieEntity
-import com.albert.cinepicarol.movie.repository.MovieRepository
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
 import org.springframework.beans.factory.annotation.Autowired

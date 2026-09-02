@@ -1,7 +1,6 @@
-package com.albert.cinepicarol.movie
+package com.albert.cinepicarol.movie.controller
 
 import com.albert.cinepicarol.auth.port.TokenPort
-import com.albert.cinepicarol.movie.controller.MovieController
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.movie.command.usecase.CreateMovieUseCase
 import com.albert.cinepicarol.movie.command.usecase.DeleteMovieUseCase

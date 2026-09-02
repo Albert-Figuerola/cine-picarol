@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.movie
+package com.albert.cinepicarol.movie.usecase
 
 import com.albert.cinepicarol.movie.command.request.CreateMovieRequest
 import com.albert.cinepicarol.movie.command.usecase.CreateMovieUseCase
