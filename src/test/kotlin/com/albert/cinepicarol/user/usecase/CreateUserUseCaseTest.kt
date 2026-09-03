@@ -1,5 +1,6 @@
 package com.albert.cinepicarol.user.usecase
 
+import com.albert.cinepicarol.user.command.mapper.toCommand
 import com.albert.cinepicarol.user.command.request.CreateUserRequest
 import com.albert.cinepicarol.user.command.usecase.CreateUserUseCase
 import com.albert.cinepicarol.user.domain.User
@@ -39,7 +40,7 @@ class CreateUserUseCaseTest {
         whenever(userPort.save(any<User>()))
             .thenAnswer { it.arguments[0] as User }
 
-        val result = createUserUseCase.execute(request)
+        val result = createUserUseCase.execute(request.toCommand())
 
         assertEquals(request.firstName, result.firstName)
         assertEquals(request.lastName, result.lastName)
@@ -60,7 +61,7 @@ class CreateUserUseCaseTest {
             .thenReturn(user)
 
         assertThrows<UserAlreadyExistsException> {
-            createUserUseCase.execute(request)
+            createUserUseCase.execute(request.toCommand())
         }
 
         verify(userPort).findByEmail(request.email)

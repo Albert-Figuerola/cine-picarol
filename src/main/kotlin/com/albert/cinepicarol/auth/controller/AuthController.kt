@@ -1,5 +1,6 @@
 package com.albert.cinepicarol.auth.controller
 
+import com.albert.cinepicarol.auth.command.mapper.toCommand
 import com.albert.cinepicarol.auth.command.request.LoginRequest
 import com.albert.cinepicarol.auth.command.usecase.LoginUseCase
 import com.albert.cinepicarol.auth.mapper.toResponse
@@ -21,7 +22,7 @@ class AuthController (
     fun login(
         @Valid @RequestBody request: LoginRequest
     ) : ApiResponse<LoginResponse> {
-        val result = loginUseCase.execute(request)
+        val result = loginUseCase.execute(request.toCommand())
 
         return ApiResponse(result.toResponse())
     }

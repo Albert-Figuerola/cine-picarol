@@ -1,5 +1,6 @@
 package com.albert.cinepicarol.auth
 
+import com.albert.cinepicarol.auth.command.model.LoginCommand
 import com.albert.cinepicarol.auth.command.request.LoginRequest
 import com.albert.cinepicarol.auth.command.usecase.LoginUseCase
 import com.albert.cinepicarol.auth.controller.AuthController
@@ -50,7 +51,7 @@ class AuthControllerTest {
         val token = "generated-token"
         val loginResult = LoginResult(user, token)
 
-        whenever(loginUseCase.execute(any<LoginRequest>())).thenReturn(loginResult)
+        whenever(loginUseCase.execute(any<LoginCommand>())).thenReturn(loginResult)
 
         mockMvc.perform(
             post("/api/v1/auth/login")
@@ -63,7 +64,7 @@ class AuthControllerTest {
             .andExpect(jsonPath("$.data.role").value("USER"))
             .andExpect(jsonPath("$.data.token").value(token))
 
-        verify(loginUseCase).execute(any<LoginRequest>())
+        verify(loginUseCase).execute(any<LoginCommand>())
     }
 
     @Test
@@ -72,7 +73,7 @@ class AuthControllerTest {
 
         doThrow(InvalidCredentialsException())
             .whenever(loginUseCase)
-            .execute(any<LoginRequest>())
+            .execute(any<LoginCommand>())
 
         mockMvc.perform(
             post("/api/v1/auth/login")
@@ -83,7 +84,7 @@ class AuthControllerTest {
             .andExpect(jsonPath("$.code").value("INVALID_CREDENTIALS"))
             .andExpect(jsonPath("$.message").value("Invalid email or password"))
 
-        verify(loginUseCase).execute(any<LoginRequest>())
+        verify(loginUseCase).execute(any<LoginCommand>())
     }
 
     @Test

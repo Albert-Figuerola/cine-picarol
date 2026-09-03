@@ -1,6 +1,7 @@
 package com.albert.cinepicarol.movie.controller
 
 import com.albert.cinepicarol.common.response.ApiResponse
+import com.albert.cinepicarol.movie.command.mapper.toCommand
 import com.albert.cinepicarol.movie.mapper.toResponse
 import com.albert.cinepicarol.movie.command.request.CreateMovieRequest
 import com.albert.cinepicarol.movie.command.request.UpdateMovieRequest
@@ -43,7 +44,7 @@ class MovieController (
         @Valid
         @RequestBody request: CreateMovieRequest
     ) : ApiResponse<MovieResponse> {
-        val movie = createMovieUseCase.execute(request)
+        val movie = createMovieUseCase.execute(request.toCommand())
         return ApiResponse(
             data = movie.toResponse()
         )
@@ -72,7 +73,7 @@ class MovieController (
         @PathVariable id: UUID,
         @RequestBody request: UpdateMovieRequest,
     ) : ApiResponse<MovieResponse> {
-        val movies = updateMovieUseCase.execute(id, request)
+        val movies = updateMovieUseCase.execute(id, request.toCommand())
         return ApiResponse(
             data = movies.toResponse()
         )

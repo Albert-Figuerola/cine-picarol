@@ -1,6 +1,6 @@
 package com.albert.cinepicarol.auth.command.usecase
 
-import com.albert.cinepicarol.auth.command.request.LoginRequest
+import com.albert.cinepicarol.auth.command.model.LoginCommand
 import com.albert.cinepicarol.auth.domain.LoginResult
 import com.albert.cinepicarol.auth.exception.InvalidCredentialsException
 import com.albert.cinepicarol.auth.port.TokenPort
@@ -15,7 +15,7 @@ class LoginUseCase (
     private val tokenPort: TokenPort
 ) {
 
-    fun execute(request: LoginRequest) : LoginResult {
+    fun execute(request: LoginCommand) : LoginResult {
         val user = userPort.findByEmail(request.email)
             ?: throw InvalidCredentialsException()
 
