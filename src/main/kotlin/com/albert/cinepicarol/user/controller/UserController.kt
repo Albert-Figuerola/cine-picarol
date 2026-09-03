@@ -34,7 +34,7 @@ class UserController(
     fun createUser(
         @Valid @RequestBody request: CreateUserRequest
     ) : ApiResponse<UserResponse> {
-        val user = createUserUseCase.execute(request)
+        val user = createUserUseCase.execute(request.toCommand())
 
         return ApiResponse(
             data = user.toResponse()

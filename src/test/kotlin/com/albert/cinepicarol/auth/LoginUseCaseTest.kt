@@ -1,5 +1,6 @@
 package com.albert.cinepicarol.auth
 
+import com.albert.cinepicarol.auth.command.mapper.toCommand
 import com.albert.cinepicarol.auth.command.request.LoginRequest
 import com.albert.cinepicarol.auth.command.usecase.LoginUseCase
 import com.albert.cinepicarol.auth.exception.InvalidCredentialsException
@@ -38,7 +39,7 @@ class LoginUseCaseTest {
         whenever(tokenPort.generateToken(user))
             .thenReturn(token)
 
-        val result = loginUseCase.execute(request)
+        val result = loginUseCase.execute(request.toCommand())
 
         assertEquals(user, result.user)
         assertEquals(token, result.token)
@@ -55,7 +56,7 @@ class LoginUseCaseTest {
             .thenReturn(null)
 
         assertThrows<InvalidCredentialsException> {
-            loginUseCase.execute(request)
+            loginUseCase.execute(request.toCommand())
         }
 
         verify(userPort).findByEmail(request.email)
@@ -74,7 +75,7 @@ class LoginUseCaseTest {
             .thenReturn(false)
 
         assertThrows<InvalidCredentialsException> {
-            loginUseCase.execute(request)
+            loginUseCase.execute(request.toCommand())
         }
 
         verify(userPort).findByEmail(request.email)

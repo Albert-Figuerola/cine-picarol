@@ -1,7 +1,7 @@
 package com.albert.cinepicarol.movie.command.usecase
 
+import com.albert.cinepicarol.movie.command.model.UpdateMovieCommand
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
-import com.albert.cinepicarol.movie.command.request.UpdateMovieRequest
 import com.albert.cinepicarol.movie.domain.Movie
 import com.albert.cinepicarol.movie.port.MoviePort
 import org.springframework.stereotype.Service
@@ -12,7 +12,7 @@ class UpdateMovieUseCase(
     private val moviePort: MoviePort
 ) {
 
-    fun execute(id: UUID, request: UpdateMovieRequest): Movie {
+    fun execute(id: UUID, request: UpdateMovieCommand): Movie {
         val movie = moviePort.findById(id) ?: throw MovieNotFoundException(id)
 
         request.title?.let {

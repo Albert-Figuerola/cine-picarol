@@ -1,5 +1,6 @@
 package com.albert.cinepicarol.movie.usecase
 
+import com.albert.cinepicarol.movie.command.mapper.toCommand
 import com.albert.cinepicarol.movie.command.request.CreateMovieRequest
 import com.albert.cinepicarol.movie.command.usecase.CreateMovieUseCase
 import com.albert.cinepicarol.movie.domain.Movie
@@ -23,7 +24,7 @@ class CreateMovieUseCaseTest {
         whenever(moviePort.save(any<Movie>()))
             .thenAnswer { it.arguments[0] as Movie }
 
-        val result = createMovieUseCase.execute(request)
+        val result = createMovieUseCase.execute(request.toCommand())
 
         assertEquals(request.title, result.title)
         assertEquals(request.description, result.description)

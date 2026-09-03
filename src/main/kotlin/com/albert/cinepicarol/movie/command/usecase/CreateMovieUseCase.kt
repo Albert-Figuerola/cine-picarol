@@ -1,6 +1,6 @@
 package com.albert.cinepicarol.movie.command.usecase
 
-import com.albert.cinepicarol.movie.command.request.CreateMovieRequest
+import com.albert.cinepicarol.movie.command.model.CreateMovieCommand
 import com.albert.cinepicarol.movie.domain.Movie
 import com.albert.cinepicarol.movie.port.MoviePort
 import org.springframework.stereotype.Service
@@ -12,7 +12,7 @@ class CreateMovieUseCase(
     private val moviePort: MoviePort
 ) {
 
-    fun execute(request: CreateMovieRequest): Movie {
+    fun execute(request: CreateMovieCommand): Movie {
 
         val movie = Movie(
             id = UUID.randomUUID(),

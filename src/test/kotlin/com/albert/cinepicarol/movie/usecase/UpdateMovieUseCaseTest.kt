@@ -1,5 +1,6 @@
 package com.albert.cinepicarol.movie.usecase
 
+import com.albert.cinepicarol.movie.command.mapper.toCommand
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.movie.command.request.UpdateMovieRequest
 import com.albert.cinepicarol.movie.command.usecase.UpdateMovieUseCase
@@ -32,7 +33,7 @@ class UpdateMovieUseCaseTest {
         whenever(moviePort.save(any<Movie>()))
             .thenAnswer { it.arguments[0] as Movie }
 
-        val result = updateMovieUseCase.execute(movie.id, request)
+        val result = updateMovieUseCase.execute(movie.id, request.toCommand())
 
         assertEquals("Interstellar updated", result.title)
         assertEquals(movie.description, result.description)
@@ -57,7 +58,7 @@ class UpdateMovieUseCaseTest {
         whenever(moviePort.save(any<Movie>()))
             .thenAnswer { it.arguments[0] as Movie }
 
-        val result = updateMovieUseCase.execute(movie.id, request)
+        val result = updateMovieUseCase.execute(movie.id, request.toCommand())
 
         assertEquals(movie.title, result.title)
         assertEquals("Interstellar updated", result.description)
@@ -82,7 +83,7 @@ class UpdateMovieUseCaseTest {
         whenever(moviePort.save(any<Movie>()))
             .thenAnswer { it.arguments[0] as Movie }
 
-        val result = updateMovieUseCase.execute(movie.id, request)
+        val result = updateMovieUseCase.execute(movie.id, request.toCommand())
 
         assertEquals(movie.title, result.title)
         assertEquals(movie.description, result.description)
@@ -107,7 +108,7 @@ class UpdateMovieUseCaseTest {
         whenever(moviePort.save(any<Movie>()))
             .thenAnswer { it.arguments[0] as Movie }
 
-        val result = updateMovieUseCase.execute(movie.id, request)
+        val result = updateMovieUseCase.execute(movie.id, request.toCommand())
 
         assertEquals(movie.title, result.title)
         assertEquals(movie.description, result.description)
@@ -137,7 +138,7 @@ class UpdateMovieUseCaseTest {
         whenever(moviePort.save(any<Movie>()))
             .thenAnswer { it.arguments[0] as Movie }
 
-        val result = updateMovieUseCase.execute(movie.id, request)
+        val result = updateMovieUseCase.execute(movie.id, request.toCommand())
 
         assertEquals("Interstellar updated", result.title)
         assertEquals("Interstellar updated", result.description)
@@ -163,7 +164,7 @@ class UpdateMovieUseCaseTest {
             .thenReturn(null)
 
         val exception = assertThrows<MovieNotFoundException> {
-            updateMovieUseCase.execute(movieId, request)
+            updateMovieUseCase.execute(movieId, request.toCommand())
         }
 
         assertEquals(
@@ -192,7 +193,7 @@ class UpdateMovieUseCaseTest {
             .thenAnswer { it.arguments[0] as Movie }
 
         val exception = assertThrows<IllegalArgumentException> {
-            updateMovieUseCase.execute(movie.id, request)
+            updateMovieUseCase.execute(movie.id, request.toCommand())
         }
 
         assertEquals(
@@ -221,7 +222,7 @@ class UpdateMovieUseCaseTest {
             .thenAnswer { it.arguments[0] as Movie }
 
         val exception = assertThrows<IllegalArgumentException> {
-            updateMovieUseCase.execute(movie.id, request)
+            updateMovieUseCase.execute(movie.id, request.toCommand())
         }
 
         assertEquals(

@@ -1,6 +1,7 @@
 package com.albert.cinepicarol.user.controller
 
 import com.albert.cinepicarol.auth.port.TokenPort
+import com.albert.cinepicarol.user.command.model.CreateUserCommand
 import com.albert.cinepicarol.user.command.request.CreateUserRequest
 import com.albert.cinepicarol.user.command.usecase.CreateUserUseCase
 import com.albert.cinepicarol.user.command.usecase.GetCurrentUserUseCase
@@ -58,7 +59,7 @@ class UserControllerTest() {
     fun `should return 201 when user is created`() {
         val user = createUser()
 
-        whenever(createUserUseCase.execute(any<CreateUserRequest>()))
+        whenever(createUserUseCase.execute(any<CreateUserCommand>()))
             .thenReturn(user)
 
         mockMvc.perform(
@@ -75,7 +76,7 @@ class UserControllerTest() {
             .andExpect(jsonPath("$.data.email").value(user.email))
             .andExpect(jsonPath("$.data.role").value("USER"))
 
-        verify(createUserUseCase).execute(any<CreateUserRequest>())
+        verify(createUserUseCase).execute(any<CreateUserCommand>())
     }
 
     @Test
@@ -84,7 +85,7 @@ class UserControllerTest() {
 
         doThrow(UserAlreadyExistsException(request.email))
             .whenever(createUserUseCase)
-            .execute(any<CreateUserRequest>())
+            .execute(any<CreateUserCommand>())
 
         mockMvc.perform(
             post("/api/v1/users")
@@ -95,7 +96,7 @@ class UserControllerTest() {
             .andExpect(jsonPath("$.code").value("USER_ALREADY_EXISTS"))
             .andExpect(jsonPath("$.message").value("User ${request.email} already exists"))
 
-        verify(createUserUseCase).execute(any<CreateUserRequest>())
+        verify(createUserUseCase).execute(any<CreateUserCommand>())
     }
 
     @Test

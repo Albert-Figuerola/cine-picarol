@@ -1,6 +1,6 @@
 package com.albert.cinepicarol.user.command.usecase
 
-import com.albert.cinepicarol.user.command.request.CreateUserRequest
+import com.albert.cinepicarol.user.command.model.CreateUserCommand
 import com.albert.cinepicarol.user.domain.User
 import com.albert.cinepicarol.user.domain.UserRole
 import com.albert.cinepicarol.user.exception.UserAlreadyExistsException
@@ -16,7 +16,7 @@ class CreateUserUseCase (
     private val passwordEncoderPort: PasswordEncoderPort
 ) {
 
-    fun execute(request: CreateUserRequest): User {
+    fun execute(request: CreateUserCommand): User {
         val existingUser = userPort.findByEmail(request.email)
 
         if (existingUser != null) {
