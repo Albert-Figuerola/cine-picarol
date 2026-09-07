@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.auth
+package com.albert.cinepicarol.auth.usecase
 
 import com.albert.cinepicarol.auth.command.mapper.toCommand
 import com.albert.cinepicarol.auth.command.request.LoginRequest
