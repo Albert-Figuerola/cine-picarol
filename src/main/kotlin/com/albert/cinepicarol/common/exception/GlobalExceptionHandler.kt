@@ -3,10 +3,12 @@ package com.albert.cinepicarol.common.exception
 import com.albert.cinepicarol.auth.exception.InvalidCredentialsException
 import com.albert.cinepicarol.common.response.ApiErrorResponse
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
+import com.albert.cinepicarol.room.exception.RoomAlreadyExistsException
 import com.albert.cinepicarol.user.exception.UserAlreadyExistsException
 import com.albert.cinepicarol.user.exception.UserNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -23,6 +25,20 @@ class GlobalExceptionHandler {
                 ApiErrorResponse(
                     code = exception.code,
                     message = exception.message
+                )
+            )
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun handleHttpMessageNotReadable(
+        exception: HttpMessageNotReadableException
+    ): ResponseEntity<ApiErrorResponse> {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(
+                ApiErrorResponse(
+                    code = "INVALID_REQUEST",
+                    message = "Request body is invalid"
                 )
             )
     }
@@ -91,6 +107,19 @@ class GlobalExceptionHandler {
         exception: UserNotFoundException
     ): ResponseEntity<ApiErrorResponse> {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(
+                ApiErrorResponse(
+                    code = exception.code,
+                    message = exception.message
+                )
+            )
+    }
+
+    @ExceptionHandler(RoomAlreadyExistsException::class)
+    fun handleRoomAlreadyExistsExceptionException(
+        exception: RoomAlreadyExistsException
+    ): ResponseEntity<ApiErrorResponse> {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
             .body(
                 ApiErrorResponse(
                     code = exception.code,

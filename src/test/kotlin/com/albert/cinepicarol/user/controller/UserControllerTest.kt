@@ -4,7 +4,7 @@ import com.albert.cinepicarol.auth.port.TokenPort
 import com.albert.cinepicarol.user.command.model.CreateUserCommand
 import com.albert.cinepicarol.user.command.request.CreateUserRequest
 import com.albert.cinepicarol.user.command.usecase.CreateUserUseCase
-import com.albert.cinepicarol.user.command.usecase.GetCurrentUserUseCase
+import com.albert.cinepicarol.user.query.usecase.GetCurrentUserUseCase
 import com.albert.cinepicarol.user.command.usecase.UpdateCurrentUserUseCase
 import com.albert.cinepicarol.user.domain.User
 import com.albert.cinepicarol.user.domain.UserRole

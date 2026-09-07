@@ -47,6 +47,9 @@ class SecurityConfig(
                     .requestMatchers(HttpMethod.DELETE, "/api/v1/movies/**")
                     .hasRole("ADMIN")
 
+                    .requestMatchers(HttpMethod.POST, "/api/v1/rooms/**")
+                    .hasRole("ADMIN")
+
                     .anyRequest().authenticated()
             }
             .addFilterBefore(

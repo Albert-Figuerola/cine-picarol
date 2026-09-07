@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.user.command.usecase
+package com.albert.cinepicarol.user.query.usecase
 
 import com.albert.cinepicarol.user.domain.User
 import com.albert.cinepicarol.user.exception.UserNotFoundException

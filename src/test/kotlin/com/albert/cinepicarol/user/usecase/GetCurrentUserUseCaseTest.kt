@@ -1,6 +1,6 @@
 package com.albert.cinepicarol.user.usecase
 
-import com.albert.cinepicarol.user.command.usecase.GetCurrentUserUseCase
+import com.albert.cinepicarol.user.query.usecase.GetCurrentUserUseCase
 import com.albert.cinepicarol.user.domain.User
 import com.albert.cinepicarol.user.domain.UserRole
 import com.albert.cinepicarol.user.exception.UserNotFoundException

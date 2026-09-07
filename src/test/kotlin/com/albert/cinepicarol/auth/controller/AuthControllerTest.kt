@@ -1,9 +1,8 @@
-package com.albert.cinepicarol.auth
+package com.albert.cinepicarol.auth.controller
 
 import com.albert.cinepicarol.auth.command.model.LoginCommand
 import com.albert.cinepicarol.auth.command.request.LoginRequest
 import com.albert.cinepicarol.auth.command.usecase.LoginUseCase
-import com.albert.cinepicarol.auth.controller.AuthController
 import com.albert.cinepicarol.auth.domain.LoginResult
 import com.albert.cinepicarol.auth.exception.InvalidCredentialsException
 import com.albert.cinepicarol.auth.port.TokenPort

@@ -1,11 +1,11 @@
-package com.albert.cinepicarol.auth
+package com.albert.cinepicarol.auth.usecase
 
 import com.albert.cinepicarol.auth.port.TokenPort
 import com.albert.cinepicarol.auth.security.JwtAuthenticationFilter
 import com.albert.cinepicarol.config.SecurityConfig
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import com.albert.cinepicarol.user.command.usecase.CreateUserUseCase
-import com.albert.cinepicarol.user.command.usecase.GetCurrentUserUseCase
+import com.albert.cinepicarol.user.query.usecase.GetCurrentUserUseCase
 import com.albert.cinepicarol.user.command.usecase.UpdateCurrentUserUseCase
 import com.albert.cinepicarol.user.controller.UserController
 import com.albert.cinepicarol.user.domain.User

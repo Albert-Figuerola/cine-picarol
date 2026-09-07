@@ -1,4 +1,4 @@
-package com.albert.cinepicarol.movie
+package com.albert.cinepicarol.movie.controller
 
 import com.albert.cinepicarol.auth.port.TokenPort
 import com.albert.cinepicarol.auth.security.JwtAuthenticationFilter
@@ -6,7 +6,6 @@ import com.albert.cinepicarol.config.SecurityConfig
 import com.albert.cinepicarol.movie.command.usecase.CreateMovieUseCase
 import com.albert.cinepicarol.movie.command.usecase.DeleteMovieUseCase
 import com.albert.cinepicarol.movie.command.usecase.UpdateMovieUseCase
-import com.albert.cinepicarol.movie.controller.MovieController
 import com.albert.cinepicarol.movie.domain.Movie
 import com.albert.cinepicarol.movie.domain.MoviesPageDomain
 import com.albert.cinepicarol.movie.query.usecase.GetMovieByIdUseCase
