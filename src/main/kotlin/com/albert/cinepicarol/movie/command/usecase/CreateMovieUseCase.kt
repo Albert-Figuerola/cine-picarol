@@ -4,7 +4,6 @@ import com.albert.cinepicarol.movie.command.model.CreateMovieCommand
 import com.albert.cinepicarol.movie.domain.Movie
 import com.albert.cinepicarol.movie.port.MoviePort
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
@@ -19,9 +18,7 @@ class CreateMovieUseCase(
             title = request.title,
             description = request.description,
             releaseYear = request.releaseYear,
-            durationMinutes = request.durationMinutes,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            durationMinutes = request.durationMinutes
         )
 
         return moviePort.save(movie)

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+            http://www.liquibase.org/xml/ns/dbchangelog
+            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="004-add-audit-user-columns" author="albert">
+
+        <addColumn tableName="movies">
+            <column name="created_by_id" type="UUID"/>
+            <column name="updated_by_id" type="UUID"/>
+        </addColumn>
+
+        <addColumn tableName="rooms">
+            <column name="created_by_id" type="UUID"/>
+            <column name="updated_by_id" type="UUID"/>
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

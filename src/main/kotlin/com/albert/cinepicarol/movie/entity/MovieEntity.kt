@@ -1,12 +1,12 @@
 package com.albert.cinepicarol.movie.entity
 
+import com.albert.cinepicarol.common.persistence.AuditableEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
-import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
@@ -27,12 +27,6 @@ class MovieEntity (
     var releaseYear: Int?,
 
     @Column(nullable = false)
-    var durationMinutes: Int,
+    var durationMinutes: Int
 
-    @Column(nullable = false)
-    val createdAt: LocalDateTime,
-
-    @Column(nullable = false)
-    val updatedAt: LocalDateTime
-
-)
+) : AuditableEntity()

@@ -13,5 +13,6 @@
     <include file="db/changelog/changes/004-create-users-table.xml"/>
     <include file="db/changelog/changes/005-rename-movie-table-to-movies.xml"/>
     <include file="db/changelog/changes/006-create-rooms-table.xml"/>
+    <include file="db/changelog/changes/007-add-audit-user-columns.xml"/>
 
 </databaseChangeLog>

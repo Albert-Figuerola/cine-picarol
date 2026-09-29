@@ -8,7 +8,5 @@ internal fun RoomEntity.toDomain(): Room =
             id = id,
             name = name,
             type = type,
-            capacity = capacity,
-            createdAt = createdAt,
-            updatedAt = updatedAt,
+            capacity = capacity
         )

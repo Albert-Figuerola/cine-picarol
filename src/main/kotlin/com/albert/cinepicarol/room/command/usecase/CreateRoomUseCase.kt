@@ -5,7 +5,6 @@ import com.albert.cinepicarol.room.domain.Room
 import com.albert.cinepicarol.room.exception.RoomAlreadyExistsException
 import com.albert.cinepicarol.room.port.RoomPort
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
@@ -18,15 +17,11 @@ class CreateRoomUseCase(
             throw RoomAlreadyExistsException(command.name)
         }
 
-        val now = LocalDateTime.now()
-
         val room = Room(
             id = UUID.randomUUID(),
             name = command.name,
             type = command.type,
-            capacity = command.capacity,
-            createdAt = now,
-            updatedAt = now
+            capacity = command.capacity
         )
 
         return roomPort.save(room)

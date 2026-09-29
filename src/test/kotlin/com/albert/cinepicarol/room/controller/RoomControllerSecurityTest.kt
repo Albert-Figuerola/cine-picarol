@@ -20,7 +20,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.time.LocalDateTime
 import java.util.UUID
 
 @WebMvcTest(RoomController::class)
@@ -81,9 +80,7 @@ class RoomControllerSecurityTest {
         id = UUID.randomUUID(),
         name = "Sala 1",
         type = RoomType.IMAX,
-        capacity = 180,
-        createdAt = LocalDateTime.now(),
-        updatedAt = LocalDateTime.now()
+        capacity = 180
     )
 
     private fun validCreateRoomRequest() = """
