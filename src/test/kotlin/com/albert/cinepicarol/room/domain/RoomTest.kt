@@ -2,7 +2,6 @@ package com.albert.cinepicarol.room.domain
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.time.LocalDateTime
 import java.util.UUID
 import kotlin.test.assertEquals
 
@@ -14,9 +13,7 @@ class RoomTest {
             id = UUID.randomUUID(),
             name = "Sala IMAX",
             type = RoomType.IMAX,
-            capacity = 180,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now(),
+            capacity = 180
         )
 
         assertEquals("Sala IMAX", room.name)
@@ -32,9 +29,7 @@ class RoomTest {
                 id = UUID.randomUUID(),
                 name = "    ",
                 type = RoomType.ISENSE,
-                capacity = 180,
-                createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now(),
+                capacity = 180
             )
         }
     }
@@ -46,9 +41,7 @@ class RoomTest {
                 id = UUID.randomUUID(),
                 name = "Titanic",
                 type = RoomType.ISENSE,
-                capacity = 0,
-                createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now(),
+                capacity = 0
             )
         }
     }

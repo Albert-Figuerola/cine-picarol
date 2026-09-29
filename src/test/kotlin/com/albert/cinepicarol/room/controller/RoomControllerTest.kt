@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.time.LocalDateTime
 import java.util.UUID
 
 @WebMvcTest(RoomController::class)
@@ -164,9 +163,7 @@ class RoomControllerTest {
             id = UUID.randomUUID(),
             name = "Sala IMAX",
             type = RoomType.IMAX,
-            capacity = 180,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now(),
+            capacity = 180
         )
     }
 

@@ -13,7 +13,6 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import java.time.LocalDateTime
 import java.util.UUID
 import kotlin.test.assertEquals
 
@@ -248,9 +247,7 @@ class UpdateMovieUseCaseTest {
             title = title,
             description = description,
             releaseYear = releaseYear,
-            durationMinutes = durationMinutes,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            durationMinutes = durationMinutes
         )
     }
 

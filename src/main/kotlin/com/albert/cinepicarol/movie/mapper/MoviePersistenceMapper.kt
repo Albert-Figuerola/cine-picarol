@@ -9,7 +9,5 @@ internal fun Movie.toEntity(): MovieEntity =
         title = title,
         description = description,
         releaseYear = releaseYear,
-        durationMinutes = durationMinutes,
-        createdAt = createdAt,
-        updatedAt = updatedAt
+        durationMinutes = durationMinutes
     )

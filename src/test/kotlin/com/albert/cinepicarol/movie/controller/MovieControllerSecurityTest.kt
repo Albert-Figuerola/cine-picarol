@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.time.LocalDateTime
 import java.util.UUID
 
 @WebMvcTest(MovieController::class)
@@ -111,9 +110,7 @@ class MovieControllerSecurityTest {
         title = "Titanic",
         description = "Titanic description",
         releaseYear = 1997,
-        durationMinutes = 194,
-        createdAt = LocalDateTime.now(),
-        updatedAt = LocalDateTime.now()
+        durationMinutes = 194
     )
 
     private fun emptyMoviesPage() = MoviesPageDomain(

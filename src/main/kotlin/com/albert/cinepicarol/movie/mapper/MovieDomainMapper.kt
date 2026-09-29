@@ -11,9 +11,7 @@ internal fun MovieEntity.toDomain(): Movie =
         title = title,
         description = description,
         releaseYear = releaseYear,
-        durationMinutes = durationMinutes,
-        createdAt = createdAt,
-        updatedAt = updatedAt
+        durationMinutes = durationMinutes
     )
 
 internal fun Page<MovieEntity>.toDomain() =

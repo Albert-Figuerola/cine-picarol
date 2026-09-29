@@ -11,7 +11,6 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import java.time.LocalDateTime
 import java.util.Optional
 import java.util.UUID
 import kotlin.test.assertEquals
@@ -60,9 +59,7 @@ class DeleteMovieUseCaseTest {
             title = "Titanic",
             description = "Titanic description",
             releaseYear = 1997,
-            durationMinutes = 194,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            durationMinutes = 194
         )
     }
 

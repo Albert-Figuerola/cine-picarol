@@ -10,7 +10,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.data.domain.PageRequest
-import java.time.LocalDateTime
 import java.util.UUID
 
 class GetMoviesUseCaseTest {
@@ -50,9 +49,7 @@ class GetMoviesUseCaseTest {
             title = title,
             description = "Description test",
             releaseYear = 1997,
-            durationMinutes = 194,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            durationMinutes = 194
         )
     }
 
