@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+            http://www.liquibase.org/xml/ns/dbchangelog
+            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="008-create-seats-table" author="albert">
+
+        <createTable tableName="seats">
+
+            <column name="id" type="UUID">
+                <constraints
+                        primaryKey="true"
+                        nullable="false"/>
+            </column>
+
+            <column name="row_letter" type="VARCHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="number" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="room_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_by_id" type="UUID"/>
+
+            <column name="updated_by_id" type="UUID"/>
+
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="seats"
+                baseColumnNames="room_id"
+                referencedTableName="rooms"
+                referencedColumnNames="id"
+                constraintName="fk_seats_room"
+                onDelete="CASCADE"/>
+
+        <addUniqueConstraint
+                tableName="seats"
+                columnNames="room_id,row_letter,number"
+                constraintName="uk_seats_room_row_number"/>
+
+    </changeSet>
+
+</databaseChangeLog>
