@@ -4,6 +4,7 @@ import com.albert.cinepicarol.auth.exception.InvalidCredentialsException
 import com.albert.cinepicarol.common.response.ApiErrorResponse
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.room.exception.RoomAlreadyExistsException
+import com.albert.cinepicarol.room.exception.RoomNotFoundException
 import com.albert.cinepicarol.user.exception.UserAlreadyExistsException
 import com.albert.cinepicarol.user.exception.UserNotFoundException
 import org.springframework.http.HttpStatus
@@ -124,6 +125,19 @@ class GlobalExceptionHandler {
                 ApiErrorResponse(
                     code = exception.code,
                     message = exception.message
+                )
+            )
+    }
+
+    @ExceptionHandler(RoomNotFoundException::class)
+    fun handleRoomNotFound(
+        exception: RoomNotFoundException,
+    ): ResponseEntity<ApiErrorResponse> {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(
+                ApiErrorResponse(
+                    code = exception.code,
+                    message = exception.message,
                 )
             )
     }
