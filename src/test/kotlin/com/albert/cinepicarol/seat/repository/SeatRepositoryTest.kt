@@ -6,6 +6,7 @@ import com.albert.cinepicarol.room.entity.RoomEntity
 import com.albert.cinepicarol.room.repository.RoomRepository
 import com.albert.cinepicarol.seat.domain.SeatType
 import com.albert.cinepicarol.seat.entity.SeatEntity
+import org.hibernate.exception.ConstraintViolationException
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
@@ -18,6 +19,10 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.util.UUID
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
+
+private const val EXPECTED_CONSTRAINT_NAME = "seats.uk_seats_room_row_number"
 
 @SpringBootTest
 class SeatRepositoryTest {
@@ -69,7 +74,7 @@ class SeatRepositoryTest {
     }
 
     @Test
-    fun `should not save duplicate seat in same room`() {
+    fun `should identify unique constraint when duplicate seat is inserted`() {
         val room = roomRepository.saveAndFlush(
             RoomEntity(
                 id = UUID.randomUUID(),
@@ -97,9 +102,16 @@ class SeatRepositoryTest {
             room = room
         )
 
-        assertThrows<DataIntegrityViolationException> {
+        val exception = assertThrows<DataIntegrityViolationException> {
             seatRepository.saveAndFlush(duplicateSeat)
         }
+
+        val constraintException = generateSequence(exception as Throwable?) { it.cause }
+            .filterIsInstance<ConstraintViolationException>()
+            .firstOrNull()
+
+        assertNotNull(constraintException)
+        assertEquals(EXPECTED_CONSTRAINT_NAME, constraintException.constraintName)
     }
 
     @Test
@@ -153,7 +165,67 @@ class SeatRepositoryTest {
 
         assertEquals(imaxRoom.id, foundImaxSeat.room.id)
         assertEquals(isenseRoom.id, foundIsenseSeat.room.id)
+    }
 
+    @Test
+    fun `should return true when seat exists in room`() {
+        val room = roomRepository.saveAndFlush(
+            RoomEntity(
+                id = UUID.randomUUID(),
+                name = "Sala ${UUID.randomUUID()}",
+                type = RoomType.IMAX,
+                capacity = 180,
+            )
+        )
+
+        val seat = seatRepository.saveAndFlush(
+            SeatEntity(
+                id = UUID.randomUUID(),
+                row = "A",
+                number = 1,
+                type = SeatType.STANDARD,
+                room = room,
+            )
+        )
+
+        val exists = seatRepository.existsByRoom_IdAndRowAndNumber(room.id, seat.row, seat.number)
+
+        assertTrue(exists)
+    }
+
+    @Test
+    fun `should return false when seat exists in another room`() {
+        val room = roomRepository.saveAndFlush(
+            RoomEntity(
+                id = UUID.randomUUID(),
+                name = "Sala ${UUID.randomUUID()}",
+                type = RoomType.IMAX,
+                capacity = 180,
+            )
+        )
+
+        val anotherRoom = roomRepository.saveAndFlush(
+            RoomEntity(
+                id = UUID.randomUUID(),
+                name = "Sala ${UUID.randomUUID()}",
+                type = RoomType.ISENSE,
+                capacity = 180,
+            )
+        )
+
+        val seat = seatRepository.saveAndFlush(
+            SeatEntity(
+                id = UUID.randomUUID(),
+                row = "A",
+                number = 1,
+                type = SeatType.STANDARD,
+                room = room,
+            )
+        )
+
+        val exists = seatRepository.existsByRoom_IdAndRowAndNumber(anotherRoom.id, seat.row, seat.number)
+
+        assertFalse(exists)
     }
 
 }

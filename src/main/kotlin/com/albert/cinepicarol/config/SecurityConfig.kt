@@ -50,6 +50,9 @@ class SecurityConfig(
                     .requestMatchers(HttpMethod.POST, "/api/v1/rooms/**")
                     .hasRole("ADMIN")
 
+                    .requestMatchers(HttpMethod.POST, "/api/v1/seats/**")
+                    .hasRole("ADMIN")
+
                     .anyRequest().authenticated()
             }
             .addFilterBefore(

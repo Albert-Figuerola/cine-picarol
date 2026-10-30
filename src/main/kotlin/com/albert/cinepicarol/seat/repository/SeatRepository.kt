@@ -5,4 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
 interface SeatRepository : JpaRepository<SeatEntity, UUID> {
+
+    fun existsByRoom_IdAndRowAndNumber(
+        roomId: UUID,
+        row: String,
+        number: Int
+    ): Boolean
+
 }

@@ -5,6 +5,7 @@ import com.albert.cinepicarol.common.response.ApiErrorResponse
 import com.albert.cinepicarol.movie.exception.MovieNotFoundException
 import com.albert.cinepicarol.room.exception.RoomAlreadyExistsException
 import com.albert.cinepicarol.room.exception.RoomNotFoundException
+import com.albert.cinepicarol.seat.exception.SeatAlreadyExistsException
 import com.albert.cinepicarol.user.exception.UserAlreadyExistsException
 import com.albert.cinepicarol.user.exception.UserNotFoundException
 import org.springframework.http.HttpStatus
@@ -117,7 +118,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RoomAlreadyExistsException::class)
-    fun handleRoomAlreadyExistsExceptionException(
+    fun handleRoomAlreadyExistsException(
         exception: RoomAlreadyExistsException
     ): ResponseEntity<ApiErrorResponse> {
         return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -137,6 +138,19 @@ class GlobalExceptionHandler {
             .body(
                 ApiErrorResponse(
                     code = exception.code,
+                    message = exception.message,
+                )
+            )
+    }
+
+    @ExceptionHandler(SeatAlreadyExistsException::class)
+    fun handleSeatAlreadyExistsException(
+        exception: SeatAlreadyExistsException,
+    ): ResponseEntity<ApiErrorResponse> {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(
+                ApiErrorResponse(
+                    code = "SEAT_ALREADY_EXISTS",
                     message = exception.message,
                 )
             )
