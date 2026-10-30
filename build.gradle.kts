@@ -59,3 +59,9 @@ allOpen {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+configurations {
+    testImplementation {
+        exclude(group = "junit", module = "junit")
+    }
+}
